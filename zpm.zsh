@@ -43,8 +43,8 @@ zpm${ZPM_DEBUG+_debug}() {
         { [[ -f "${filename}.zsh" ]] && filename+=".zsh" } ||\
         { [[ -f "${filename}.plugin.zsh" ]] && filename+=".plugin.zsh" } ||\
         { _ppn "No file to source for " $remt_loc && return 1 }
-        [[ "${filename}" -nt "${filename}.zwc" ]] ||\
-        [[ ! -f "${filename}.zwc" ]] && zcompile "${filename}"
+        { [[ "${filename}" -nt "${filename}.zwc" ]] ||\
+        [[ ! -f "${filename}.zwc" ]] && zcompile "${filename}" } &!
         (( ! ${+ZPM_NOASYNC} )) && (( ! ${+noasync} )) && local async=("zsh-defer" "${${(@s: :)defer}[@]}")
         $async sourcer_and_postload "$filename" "$postload"
     }
@@ -123,7 +123,7 @@ fi
 typeset -aU _zplgs=("${${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}%/*}")
 fpath+=("${0:A:h}/completions/")
 export ZPM="${ZPM:-${0:A:h}}"
-[[ "${0:A}" -nt "${0:A}.zwc" ]] ||\
-[[ ! -f "${0:A}.zwc" ]] && zcompile "${0:A}"
+{ [[ "${0:A}" -nt "${0:A}.zwc" ]] ||\
+[[ ! -f "${0:A}.zwc" ]] && zcompile "${0:A}" } &!
 (( ! ${+ZPM_NOASYNC} )) && zpm 'romkatv/zsh-defer' noasync
-zpm 'trobjo/zsh-common-functions' noasync
+zpm 'trobj/zsh-common-functions' noasync
