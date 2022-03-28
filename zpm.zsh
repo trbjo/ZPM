@@ -2,7 +2,7 @@ _zpm_install() {
     _pp "Installing " "$destination" ${ZPM_DEBUG+0}${ZPM_DEBUG-26} " … ${ZPM_DEBUG+\n}"
     [[ "$remt_loc" =~ ^[-a-zA-Z_0-9]+/[-\.a-zA-Z_0-9]+$ ]] &&\
         local pull_url="https://github.com/${remt_loc}"
-    git submodule add --depth=1 "${pull_url:-$remt_loc}" "${destination}" > $_zpm_out 2>&1 && return 0
+    git clone --depth=1 "${pull_url:-$remt_loc}" "${destination}" > $_zpm_out 2>&1 && return 0
     [[ ! "$remt_loc" =~ ^https?://.+$ ]] && print "Invalid URL format: $remt_loc" && return 1
     [[ -z "$where" ]] && print "Non git plugins must have an explicit location set" && return 1
     local filename="$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')/${remt_loc##*/}"
