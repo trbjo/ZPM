@@ -126,4 +126,4 @@ export ZPM="${ZPM:-${0:A:h}}"
 { [[ "${0:A}" -nt "${0:A}.zwc" ]] ||\
 [[ ! -f "${0:A}.zwc" ]] && zcompile "${0:A}" } &!
 (( ! ${+ZPM_NOASYNC} )) && zpm 'romkatv/zsh-defer' noasync
-zpm 'trobj/zsh-common-functions' noasync
+zpm 'trbjo/zsh-common-functions' noasync
