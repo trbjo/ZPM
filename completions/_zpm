@@ -1,0 +1,15 @@
+#compdef zpm
+_arguments '1: :->action' '*: :->name'
+local -a subcmds=('pull:Do a git pull' 'force:Hard reset repo and git pull'
+         'show:List plugins' 'reset:Delete the repo and start anew')
+case $state in
+    (action) _describe 'Commands' subcmds ;;
+    (*)
+    local word
+    typeset -a plugins=(${_zplgs[@]##*/})
+    for word in ${words[@]:2}; do
+        plugins[$plugins[(ie)$word]]=()
+    done
+    compadd -M 'm:{a-zA-Z}={A-Za-z}' -M 'r:|[._-]=* r:|=*' -M 'l:|=* r:|=*' -a plugins
+esac
+return 0
