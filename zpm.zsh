@@ -24,8 +24,8 @@ zpm${ZPM_DEBUG+_debug}() {
     local -r remt_loc="${1/%\//}"
     for part in "${@:2}"; do
         local key="${part%%:*}"
+        [[ $key == 'if' ]] && { eval "${part:(( ${#key} + 1))}" > /dev/null 2>&1 || return 1 }
         local -r $key="${part:(( ${#key} + 1))}"
-        [[ $key == 'if' ]] && { _eval_expr if || return 1 }
     done
     local destination="${(e)where:-${ZPM}/${${remt_loc%/*}##*/}/${remt_loc##*/}}"
     (( ${+preload} )) && { _eval_expr preload || return 1 }
@@ -66,6 +66,7 @@ _pp() { print -n "$1\e[35m\e[3m${(r:${3}:: :)${2##*/}}\e[0m${4}" }
 _ppn() { print "$1\e[35m\e[3m${(r:${3}:: :)${2##*/}}\e[0m${4}" }
 
 ZPM_LOADED() {
+    print -n -- '\e[?25h'
     unfunction ZPM_LOADED
     zpm() {
         if [[ ! "$1" =~ '^(force|pull|reset|show)$' ]]; then
@@ -94,17 +95,16 @@ ZPM_LOADED() {
     }
 }
 
-if (( ${+ZPM_DEBUG} )); then
+_eval_expr() {
+    eval "${(P)1}" > $_zpm_out 2>&1 && return 0
+    _ppn "\e[31mFailed \e[1m\e[34m$1\e[0m hook for " $remt_loc 0 ":\n${(P)1}"
+    return 1
+}
+
+(( ${+ZPM_DEBUG} )) && {
     _zpm_out=/dev/stdout
     typeset -a _zplgs_remote
     zmodload zsh/datetime
-    _eval_expr() {
-        [[ $1 == 'if' ]] && local _zpm_out=/dev/null
-        eval "${(P)1}" > $_zpm_out 2>&1 && return 0
-        _ppn "\e[31mFailed \e[1m\e[34m$1\e[0m hook for " $remt_loc 0 ":\n${(P)1}"
-        return 1
-    }
-
     zpm() {
         (($_zplgs_remote[(Ie)$1])) && _ppn "\e[31mDuplicate plugin: " $1 && return 1
         local part start end flatstring
@@ -119,10 +119,7 @@ if (( ${+ZPM_DEBUG} )); then
         _ppn "\r$flatstring " "${1}" $((40 - ${#flatstring})) \
         " … took ${(l:4:: :)$((end - start))} ms"
     }
-else
-    _zpm_out=/dev/null
-    _eval_expr() { eval "${(P)1}" > /dev/null 2>&1 || return 1 }
-fi
+} || _zpm_out=/dev/null
 
 typeset -aU _zplgs=("${${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}%/*}")
 fpath+=("${0:A:h}/completions/")
