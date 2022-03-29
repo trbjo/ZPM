@@ -122,3 +122,4 @@ alias fix_whitespace="git ls-tree -r master --name-only | xargs sed -i 's/[ \t]*
 
 zpm trbjo/zsh-prompt-compact
 ZPM_LOADED
+print -Pn -- "\e[?25h" &!
