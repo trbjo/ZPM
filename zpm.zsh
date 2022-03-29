@@ -31,7 +31,7 @@ zpm${ZPM_DEBUG+_debug}() {
     (( ${+preload} )) && { _eval_expr preload || return 1 }
     if [[ ! -e "${destination}" ]]; then
         if _zpm_install && _eval_expr postinstall; then
-            print "\e[32mSuccess\e[0m!\033[s"
+            print "\e[32mSuccess\e[0m!\033[s\033[?25h"
         else
             rm -rf "$destination"
             print "\e[31mFailed installation\e[0m, skipping plugin…"
