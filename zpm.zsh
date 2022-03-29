@@ -49,14 +49,17 @@ zpm${ZPM_DEBUG+_debug}() {
         $async sourcer_and_postload "$filename" "$postload"
     }
     _zplgs+="${destination}"
-    (( ! ${+ZPM_DEBUG} )) || flatstring="${nosource:-${async:+${(@j. .)async:#} }source}"
+    (( ! ${+ZPM_DEBUG} )) || flatstring="${nosource+no}${nosource-${async:+${(@j. .)async:#} }}source"
 }
 
 sourcer_and_postload() {
     local filename="$1" postload="$2"
     set --
     source "${filename}" > $_zpm_out 2>&1
-    (( ${+postload} )) && _eval_expr postload
+    if (( ${+postload} )); then
+        (( ${+ZPM_DEBUG} )) && local remt_loc=${filename%.*}
+        _eval_expr postload
+    fi
 }
 
 _pp() { print -n "$1\e[35m\e[3m${(r:${3}:: :)${2##*/}}\e[0m${4}" }
@@ -96,7 +99,8 @@ if (( ${+ZPM_DEBUG} )); then
     typeset -a _zplgs_remote
     zmodload zsh/datetime
     _eval_expr() {
-        eval "${(P)${(@s: :)1}[@]}" > $_zpm_out 2>&1 && return 0
+        [[ $1 == 'if' ]] && local _zpm_out=/dev/null
+        eval "${(P)1}" > $_zpm_out 2>&1 && return 0
         _ppn "\e[31mFailed \e[1m\e[34m$1\e[0m hook for " $remt_loc 0 ":\n${(P)1}"
         return 1
     }
