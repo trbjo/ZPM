@@ -1,5 +1,5 @@
 _zpm_install() {
-    _pp "\r\033[0JInstalling " "$destination" ${ZPM_DEBUG+0}${ZPM_DEBUG-26} " … ${ZPM_DEBUG+\n}"
+    _pp "\r\033[0J\033[?25hInstalling " "$destination" ${ZPM_DEBUG+0}${ZPM_DEBUG-26} " … ${ZPM_DEBUG+\n}"
     [[ "$remt_loc" =~ ^[-a-zA-Z_0-9]+/[-\.a-zA-Z_0-9]+$ ]] &&\
         local pull_url="https://github.com/${remt_loc}"
     git clone --depth=1 "${pull_url:-$remt_loc}" "${destination}" > $_zpm_out 2>&1 && return 0
@@ -31,7 +31,7 @@ zpm${ZPM_DEBUG+_debug}() {
     (( ${+preload} )) && { _eval_expr preload || return 1 }
     if [[ ! -e "${destination}" ]]; then
         if _zpm_install && _eval_expr postinstall; then
-            print "\e[32mSuccess\e[0m!\033[s\033[?25h"
+            print "\e[32mSuccess\e[0m!\033[s"
         else
             rm -rf "$destination"
             print "\e[31mFailed installation\e[0m, skipping plugin…"
