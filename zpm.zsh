@@ -95,6 +95,7 @@ ZPM_LOADED() {
 }
 
 if (( ${+ZPM_DEBUG} )); then
+    print -n "\e[u"
     _zpm_out=/dev/stdout
     typeset -a _zplgs_remote
     zmodload zsh/datetime
