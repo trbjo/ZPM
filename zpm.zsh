@@ -1,5 +1,5 @@
 _zpm_install() {
-    _pp "Installing " "$destination" ${ZPM_DEBUG+0}${ZPM_DEBUG-26} " … ${ZPM_DEBUG+\n}"
+    _pp "\r\033[0JInstalling " "$destination" ${ZPM_DEBUG+0}${ZPM_DEBUG-26} " … ${ZPM_DEBUG+\n}"
     [[ "$remt_loc" =~ ^[-a-zA-Z_0-9]+/[-\.a-zA-Z_0-9]+$ ]] &&\
         local pull_url="https://github.com/${remt_loc}"
     git clone --depth=1 "${pull_url:-$remt_loc}" "${destination}" > $_zpm_out 2>&1 && return 0
@@ -95,7 +95,6 @@ ZPM_LOADED() {
 }
 
 if (( ${+ZPM_DEBUG} )); then
-    print -n "\e[u"
     _zpm_out=/dev/stdout
     typeset -a _zplgs_remote
     zmodload zsh/datetime
@@ -117,7 +116,7 @@ if (( ${+ZPM_DEBUG} )); then
         zpm_debug "$@" &&\
         _zplgs_remote+="$1" &&\
         strftime -s end  %s%3. $epochtime &&\
-        _ppn "$flatstring " "${1}" $((40 - ${#flatstring})) \
+        _ppn "\r$flatstring " "${1}" $((40 - ${#flatstring})) \
         " … took ${(l:4:: :)$((end - start))} ms"
     }
 else
