@@ -49,7 +49,7 @@ zpm${ZPM_DEBUG+_debug}() {
         $async sourcer_and_postload "$filename" "$postload"
     }
     _zplgs+="${destination}"
-    (( ! ${+ZPM_DEBUG} )) || flatstring="${nosource+no}${nosource-${async:+${(@j. .)async:#} }}source"
+    (( ! ${+ZPM_DEBUG} )) || flatstring="${async:+${(@j. .)async:#} }${nosource+no}source"
 }
 
 sourcer_and_postload() {
