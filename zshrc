@@ -22,9 +22,6 @@ zpm 'https://raw.githubusercontent.com/trbjo/czmod-compiled/master/czmod'\
 zpm zdharma-continuum/fast-syntax-highlighting
 zpm zsh-users/zsh-autosuggestions postload:'ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=6,underline'
 
-# Dependency of prompt
-zpm romkatv/gitstatus
-
 # Adds functionality to buffer. Autopairing of quotes, etc.
 zpm trbjo/zsh-goodies preload:'KEYTIMEOUT=1; setopt AUTO_PUSHD'
 
@@ -44,6 +41,12 @@ zpm 'https://github.com/junegunn/fzf/releases/download/0.29.0/fzf-0.29.0-linux_a
     nosource
 
 zpm trbjo/zsh-fzf-functions if:'type fzf && type fd'
+
+# Dependency of prompt
+zpm romkatv/gitstatus
+zpm trbjo/zsh-prompt-compact
+
+ZPM_LOADED
 
 
 # - - - - - - - - - - - - - - - - - - - -
@@ -119,7 +122,3 @@ zshaddhistory() { whence ${${(z)1}[1]} >| /dev/null || return 1 }
 
 alias fdd='fd --no-ignore-vcs --hidden'
 alias fix_whitespace="git ls-tree -r master --name-only | xargs sed -i 's/[ \t]*$//'"
-
-zpm trbjo/zsh-prompt-compact
-ZPM_LOADED
-print -Pn -- "\e[?25h" &!
