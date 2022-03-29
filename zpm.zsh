@@ -24,7 +24,7 @@ zpm${ZPM_DEBUG+_debug}() {
     local -r remt_loc="${1/%\//}"
     for part in "${@:2}"; do
         local key="${part%%:*}"
-        [[ $key == 'if' ]] && { eval "${part:(( ${#key} + 1))}" > /dev/null 2>&1 || return 1 }
+        [[ $key == 'if' ]] && { eval "${part:(( ${#key} + 1))}" > /dev/null 2>&1 || return 1 } ||\
         local -r $key="${part:(( ${#key} + 1))}"
     done
     local destination="${(e)where:-${ZPM}/${${remt_loc%/*}##*/}/${remt_loc##*/}}"
