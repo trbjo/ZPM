@@ -22,9 +22,6 @@ zpm 'https://raw.githubusercontent.com/trbjo/czmod-compiled/master/czmod'\
 zpm zdharma-continuum/fast-syntax-highlighting
 zpm zsh-users/zsh-autosuggestions postload:'ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=6,underline'
 
-# Dependency of prompt
-zpm romkatv/gitstatus
-
 # Adds functionality to buffer. Autopairing of quotes, etc.
 zpm trbjo/zsh-goodies preload:'KEYTIMEOUT=1; setopt AUTO_PUSHD'
 
@@ -78,6 +75,11 @@ zpm trbjo/userchrome\
 zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'~/.tmux/plugins/tpm'\
     postinstall:'tmux run-shell "${HOME}/.tmux/plugins/tpm/bindings/install_plugins"'
 
+# Dependency of prompt
+zpm romkatv/gitstatus
+zpm trbjo/zsh-prompt-compact
+
+ZPM_LOADED
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - BYTE COMPILING- - - - - - - -
@@ -164,7 +166,3 @@ fi
 
 alias fdd='fd --no-ignore-vcs --hidden'
 alias fix_whitespace="git ls-tree -r master --name-only | xargs sed -i 's/[ \t]*$//'"
-
-zpm trbjo/zsh-prompt-compact
-ZPM_LOADED
-print -Pn -- "\e[?25h" &!
