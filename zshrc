@@ -6,11 +6,11 @@
 # local ZPM_NOASYNC
 source "${${${${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}}:A}%/*}/zpm.zsh"
 
-# sets up zsh completion system, some keybindings, and some useful aliases
-zpm trbjo/zsh-sensible-defaults
-
 # Sets up LS_COLORS and more
 zpm trbjo/zsh-colors
+
+# sets up zsh completion system, some keybindings, and some useful aliases
+zpm trbjo/zsh-sensible-defaults
 
 # Sets up the z command in a fast lua implementation
 zpm skywind3000/z.lua if:'type lua' preload:'_ZL_CMD=h' &&\
