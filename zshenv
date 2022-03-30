@@ -1,15 +1,18 @@
 # set up the preliminary prompt while we wait for the plugins to initialize
-if [[ -o INTERACTIVE && -t 2 ]]; then
+[[ -o INTERACTIVE && -t 2 ]] && () {
+    # typeset -g ZPM_DEBUG
+    # typeset -g ZPM_NOASYNC
+    (( ${+ZPM_DEBUG} || ${+ZPM_NOASYNC} )) && return
     PROMPT_EOL_MARK=
     print -Pn -- "\e]2;${PWD/$HOME/\~}\a"
     if (( ${+OLDPROMPT} )); then
         print -Pn -- "\e[?25l\n\n\e[1A\e[s${OLDPROMPT}\e[u"
-        PROMPT="$OLDPROMPT"
+        PROMPT=$'$OLDPROMPT\e[?25h'
     else
         print -Pn -- "\e[36m${${PWD/#$HOME/\~}//\//\e[39m\/\e[36m}\e[39m\n\e[35m❯\e[0m "
         PROMPT=$'\e[u\e[36m${PWD/$HOME/~}\n\e[35m❯\e[0m '
     fi
-fi
+}
 
 (( ${+SSH_TTY} )) && export TERM="xterm-256color"
 type go > /dev/null 2>&1 && export GOPATH="$HOME/go"
