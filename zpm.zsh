@@ -93,7 +93,7 @@ ZPM_LOADED() {
             git -C ${plg} pull 2> $_zpm_out ||\
             print "\e[31mFailed to update\e[0m"
         done
-        (( ${+show} )) || exec $(which zsh) -l
+        (( ${+show} )) || exec $(which zsh)
     }
 }
 
