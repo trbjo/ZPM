@@ -46,19 +46,22 @@ zpm${ZPM_DEBUG+_debug}() {
         { [[ "${filename}" -nt "${filename}.zwc" ]] ||\
         [[ ! -f "${filename}.zwc" ]] && zcompile "${filename}" } &!
         (( ! ${+ZPM_NOASYNC} )) && (( ! ${+noasync} )) && local async=("zsh-defer" "${${(@s: :)defer}[@]}")
-        $async sourcer_and_postload "$filename" "$postload"
+        $async sourcer_and_postload "$filename" "$remt_loc" $postload
     }
     _zplgs+="${destination}"
     (( ! ${+ZPM_DEBUG} )) || flatstring="${async:+${(@j. .)async:#} }${nosource+no}source"
 }
 
 sourcer_and_postload() {
-    local filename="$1" postload="$2"
-    set --
-    source "${filename}" > $_zpm_out 2>&1
-    if (( ${+postload} )); then
-        (( ${+ZPM_DEBUG} )) && local remt_loc=${filename%.*}
+    if (( $#@ == 3 )); then
+        local -r filename="$1" remt_loc="$2" postload="$3"
+        set --
+        source "$filename" > $_zpm_out 2>&1
         _eval_expr postload
+    else
+        local filename="$1"
+        set --
+        source "$filename" > $_zpm_out 2>&1
     fi
 }
 
