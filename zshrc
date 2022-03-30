@@ -2,9 +2,7 @@
 # - - - - - - - PLUGINS - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
 
-# local ZPM_DEBUG
-# local ZPM_NOASYNC
-source "${${${${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}}:A}%/*}/zpm.zsh"
+source "${${${(%):-%N}:A}%/*}/zpm.zsh"
 
 # Sets up LS_COLORS and more
 zpm trbjo/zsh-colors
