@@ -18,7 +18,7 @@ zpm 'https://raw.githubusercontent.com/trbjo/czmod-compiled/master/czmod'\
     nosource
 
 zpm zdharma-continuum/fast-syntax-highlighting
-zpm zsh-users/zsh-autosuggestions postload:'ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=6,underline ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=("bracketed-paste-url-magic" "url-quote-magic")'
+zpm zsh-users/zsh-autosuggestions postload:'ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=6,underline'
 
 # Adds functionality to buffer. Autopairing of quotes, etc.
 zpm trbjo/zsh-goodies preload:'KEYTIMEOUT=1; setopt AUTO_PUSHD'
