@@ -87,7 +87,7 @@ ZPM_LOADED() {
             [[ ${@} ]] && _zpm="${_zplgs[(r)*/$plg]}" || _zpm="$plg"
             [[ -z "$_zpm" ]] && _ppn "" $plg 0 " is not an installed plugin" && continue || plg="$_zpm"
             (( ${+show} )) && _ppn "" "$plg" 26 "➔  $(_colorizer_abs_path $plg)" && continue
-            (( ${+reset} )) && { [[ $plg != ${_zplgs[1]} ]] && rm -rf $plg || continue } && continue
+            (( ${+reset} )) && { [[ "$plg" != "$ZPM" ]] && rm -rf $plg; continue }
             (( ${+force} )) && git -C "$plg" reset --hard HEAD > $_zpm_out 2>&1
             _pp "Updating " "$plg" 25 "… "
             git -C ${plg} pull 2> $_zpm_out ||\
@@ -123,9 +123,9 @@ _eval_expr() {
     }
 } || _zpm_out=/dev/null
 
-typeset -a _zplgs=("${${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}%/*}")
-fpath+=("${0:A:h}/completions/")
-export ZPM="${ZPM:-${0:A:h}}"
+export ZPM="${0:A:h}"
+typeset -a _zplgs=($ZPM)
+fpath+=("${ZPM}/completions/")
 { [[ "${0:A}" -nt "${0:A}.zwc" ]] ||\
 [[ ! -f "${0:A}.zwc" ]] && zcompile "${0:A}" } &!
 (( ! ${+ZPM_NOASYNC} )) && zpm 'romkatv/zsh-defer' noasync
