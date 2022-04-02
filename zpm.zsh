@@ -123,7 +123,7 @@ _eval_expr() {
     }
 } || _zpm_out=/dev/null
 
-export -r ZPM="${0:A:h}"
+typeset -gxr ZPM="${0:A:h}"
 typeset -a _zplgs=($ZPM)
 fpath+=("${ZPM}/completions/")
 { [[ "${0:A}" -nt "${0:A}.zwc" ]] ||\
