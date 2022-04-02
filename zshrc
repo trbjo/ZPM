@@ -41,7 +41,7 @@ zpm 'https://github.com/junegunn/fzf/releases/download/0.29.0/fzf-0.29.0-linux_a
 zpm trbjo/zsh-fzf-functions if:'type fzf && type fd'
 zpm trbjo/ZshGotoSublimeCurrentDir\
     where:'$XDG_CONFIG_HOME/sublime-text/Packages/ZshGotoSublimeCurrentDir'\
-    if:'[[ -d /opt/sublime_text/ ]]'
+    if:'[[ -d /opt/sublime_text/ ]] && [[ $WAYLAND_DISPLAY ]]'
 
 zpm trbjo/zsh-multimedia if:'type transmission-remote'
 zpm trbjo/zsh-wayland-utils if:'[[ $WAYLAND_DISPLAY ]]'
@@ -50,7 +50,7 @@ zpm trbjo/zsh-file-opener preload:'_ZSH_FILE_OPENER_CMD=u
 
 zpm trbjo/Neovim-config\
     if:'type nvim'\
-    where:'$XDG_CONFIG_HOME/nvim'\
+    where:'${XDG_CONFIG_HOME:-$HOME/.config}/nvim'\
     postinstall:'nvim +PlugInstall +qall && printf "\e[6 q"'\
     nosource
 
