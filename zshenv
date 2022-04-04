@@ -1,18 +1,11 @@
-# set up the preliminary prompt while we wait for the plugins to initialize
-[[ -o INTERACTIVE && -t 2 && ! $SSH_CONNECTION ]] && () {
-    # typeset -g ZPM_DEBUG
-    # typeset -g ZPM_NOASYNC
-    (( ${+ZPM_DEBUG} )) && return
+# set up the fake prompt while we wait for the plugins to initialize
+[[ -o INTERACTIVE && -t 2 ]] && () {
     PROMPT_EOL_MARK=
-    print -Pn -- "\e]2;${PWD/$HOME/\~}\a"
     if (( ${+OLDPROMPT} )); then
-        print -Pn -- "\e[?25l\n\n\e[1A\e[s${OLDPROMPT}\e[u"
-        PROMPT=$'$OLDPROMPT\e[?25h'
+        print -Pn -- "\e[?25l\n\n\e[1A\e[s${OLDPROMPT}\e[u\e]2;${PWD/$HOME/\~}\a"
     else
-        print -Pn -- "\e[s\e[36m${${PWD/#$HOME/\~}//\//\e[39m\/\e[36m}\e[39m\n\e[35m❯\e[0m "
-        PROMPT=$'\e[u\e[36m${PWD/$HOME/~}\n\e[35m❯\e[0m '
+        print -Pn -- "\e[s\e[36m${${PWD/#$HOME/\~}//\//\e[39m\/\e[36m}\e[39m\n${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m \e]2;${PWD/$HOME/\~}\a"
     fi
-    (( ${+ZPM_NOASYNC} )) && print -n '\e[?25l\e[u'
 }
 
 (( ${+SSH_TTY} )) && export TERM="xterm-256color"
