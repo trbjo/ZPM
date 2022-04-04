@@ -163,3 +163,4 @@ fi
 
 alias fdd='fd --no-ignore-vcs --hidden'
 alias fix_whitespace="git ls-tree -r master --name-only | xargs sed -i 's/[ \t]*$//'"
+alias g=git
