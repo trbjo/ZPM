@@ -87,7 +87,7 @@ setopt auto_resume              # Attempt To Resume Existing Job Before Creating
 setopt no_beep                  # Don't beep
 setopt no_bg_nice               # Don't frob with nicelevels
 setopt no_flow_control          # Disable ^S, ^Q, ^\ #
-stty -ixon quit undef > /dev/null 2>&1           # For Vim etc; above is just for zsh.
+stty -ixon quit undef > /dev/null 2>&1 &!           # For Vim etc; above is just for zsh.
 
 setopt appendhistory notify
 unsetopt beep nomatch

@@ -69,6 +69,7 @@ _pp() { print -n "$1\e[35m\e[3m${(r:${3}:: :)${2##*/}}\e[0m${4}" }
 _ppn() { print "$1\e[35m\e[3m${(r:${3}:: :)${2##*/}}\e[0m${4}" }
 
 ZPM_LOADED() {
+    print -n '\e[?25h'
     unfunction ZPM_LOADED
     zpm() {
         if [[ ! "$1" =~ '^(force|pull|reset|show)$' ]]; then
