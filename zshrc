@@ -86,8 +86,7 @@ setopt no_complete_aliases
 setopt auto_resume              # Attempt To Resume Existing Job Before Creating A New Process.
 setopt no_beep                  # Don't beep
 setopt no_bg_nice               # Don't frob with nicelevels
-setopt no_flow_control          # Disable ^S, ^Q, ^\ #
-stty -ixon quit undef > /dev/null 2>&1 &!           # For Vim etc; above is just for zsh.
+setopt no_flow_control                              # Disable ^S, ^Q, ^\ for zsh
 
 setopt appendhistory notify
 unsetopt beep nomatch
