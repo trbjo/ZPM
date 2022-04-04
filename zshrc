@@ -1,3 +1,13 @@
+# typeset -g ZPM_DEBUG
+(( ${+ZPM_DEBUG} )) || () {
+    if (( ${+OLDPROMPT} )); then
+        PROMPT=$'$OLDPROMPT\e[?25h'
+    else
+        PROMPT=$'\e[u\e[36m${PWD/$HOME/~}\n\e[39m${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m '
+    fi
+    # typeset -g ZPM_NOASYNC && print -n '\e[?25l\e[u'
+}
+
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - PLUGINS - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
