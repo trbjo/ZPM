@@ -101,7 +101,7 @@ ZPM_LOADED() {
 
 _eval_expr() {
     eval "${(P)1}" > $_zpm_out 2>&1 && return 0
-    _ppn "\e[31mFailed \e[1m\e[34m$1\e[0m hook for " $remt_loc 0 ":\n${(P)1}"
+    _ppn "\e[31mFailed \e[1m\e[34m$1\e[0m hook for " $remt_loc 0 ":\n${(P)1}\n\e[s"
     return 1
 }
 
