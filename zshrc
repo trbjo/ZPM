@@ -52,7 +52,7 @@ zpm trbjo/zsh-fzf-functions if:'type fzf && type fd'
 
 # Dependency of prompt
 zpm romkatv/gitstatus
-zpm trbjo/zsh-prompt-compact preload:'if (( ${+SSH_TTY} )); then PROMPT=; fi'
+zpm trbjo/zsh-prompt-compact
 
 ZPM_LOADED
 
