@@ -85,7 +85,7 @@ zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'~/.tmux/p
 
 # Dependency of prompt
 zpm romkatv/gitstatus
-zpm trbjo/zsh-prompt-compact preload:'if (( ${+SSH_TTY} )); then PROMPT=; fi'
+zpm trbjo/zsh-prompt-compact
 
 ZPM_LOADED
 
