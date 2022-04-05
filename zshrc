@@ -85,7 +85,7 @@ zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'~/.tmux/p
 
 # Dependency of prompt
 zpm romkatv/gitstatus
-zpm trbjo/zsh-prompt-compact preload:"EXTRA_SSH_ENV='git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh'"
+zpm trbjo/zsh-prompt-compact preload:"EXTRA_SSH_ENV='git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh && exec zsh'"
 
 ZPM_LOADED
 
