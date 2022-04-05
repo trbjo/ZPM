@@ -57,3 +57,5 @@ for file_to_source in $files_to_source; do
 done
 
 autoload -U compinit && compinit -i
+
+exec zsh
