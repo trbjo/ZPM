@@ -20,13 +20,10 @@ for filename in $files; do
                 [Dd]) ans='Delete' ;;
                 [Bb]) ans='Backup' ;;
                 [Qq]) ans='Quit' ;;
-                [Ss]) ans='Skip' ;;
             esac
         done
         if [[ $ans == "Quit" ]]; then
             exit
-        elif [[ $ans == "Skip" ]]; then
-            continue
         elif [[ $ans == "Delete" ]]; then
             rm "$file"
         elif [[ $ans == "Backup" ]]; then
@@ -53,10 +50,5 @@ if [[ $ans == "Yes" ]]; then
     git -C "${0:A:h}" switch trbjo
 fi
 
-for file_to_source in $files_to_source; do
-    source "$file_to_source"
-done
-
 autoload -U compinit && compinit -i
-
 exec zsh
