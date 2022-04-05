@@ -9,7 +9,7 @@
 }
 
 (( ${+SSH_TTY} )) && export TERM="xterm-256color"
-type go > /dev/null 2>&1 && export GOPATH="$HOME/go"
+type go > /dev/null 2>&1 && export GOPATH="$HOME/.local/share/go"
 
 # Remove path duplicates
 typeset -U PATH path fpath
