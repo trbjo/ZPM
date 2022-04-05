@@ -38,11 +38,6 @@ for filename in $files; do
     files_to_source+="$file"
 done
 
-for file_to_source in $files_to_source; do
-    source "$file_to_source"
-done
-
-autoload -U compinit && compinit -i
 unset ans
 print "Do you want to switch to the trbjo branch? [y/N]"
 until [[ ! -z $ans ]]; do
@@ -56,3 +51,9 @@ done
 if [[ $ans == "Yes" ]]; then
     git -C "${0:A:h}" switch trbjo
 fi
+
+for file_to_source in $files_to_source; do
+    source "$file_to_source"
+done
+
+autoload -U compinit && compinit -i
