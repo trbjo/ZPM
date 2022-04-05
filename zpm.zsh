@@ -89,7 +89,7 @@ ZPM_LOADED() {
             [[ -z "$_zpm" ]] && _ppn "" $plg 0 " is not an installed plugin" && continue || plg="$_zpm"
             (( ${+show} )) && _ppn "" "$plg" 26 "➔  $(_colorizer_abs_path $plg)" && continue
             (( ${+reset} )) && { [[ "$plg" != "$ZPM" ]] && rm -rf $plg; continue }
-            [[ ! -d "${plg}/.git" ]] && _ppn "\e[38;5;242mSkipping " "$plg" 27 "\e[38;5;242mIs not a git repo.\e[0m" && continue
+            [[ ! -d "${plg}/.git" ]] && _ppn "\e[38;5;242mSkipping " "$plg" 27 "\e[38;5;242mNot a git repository.\e[0m" && continue
             (( ${+force} )) && git -C "$plg" reset --hard HEAD > $_zpm_out 2>&1
             _pp "Updating " "$plg" 25 "… "
             git -C ${plg} pull 2> $_zpm_out ||\
