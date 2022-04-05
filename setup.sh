@@ -39,7 +39,7 @@ for filename in $files; do
 done
 
 unset ans
-print "Do you want to switch to the trbjo branch? [y/N]"
+print -n "Do you want to switch to the trbjo branch? [y/N]"
 until [[ ! -z $ans ]]; do
     read -sk reply
     case $reply in
@@ -47,6 +47,7 @@ until [[ ! -z $ans ]]; do
         *) ans='No' ;;
     esac
 done
+print
 
 if [[ $ans == "Yes" ]]; then
     git -C "${0:A:h}" switch trbjo
