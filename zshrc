@@ -48,7 +48,41 @@ zpm 'https://github.com/junegunn/fzf/releases/download/0.29.0/fzf-0.29.0-linux_a
     where:'$HOME/.local/bin/fzf'\
     nosource
 
-zpm trbjo/zsh-fzf-functions if:'type fzf && type fd'
+zpm trbjo/zsh-fzf-functions
+zpm trbjo/ZshGotoSublimeCurrentDir\
+    where:'$XDG_CONFIG_HOME/sublime-text/Packages/ZshGotoSublimeCurrentDir'\
+    if:'[[ -d /opt/sublime_text/ ]] && [[ $WAYLAND_DISPLAY ]]'
+
+zpm trbjo/zsh-multimedia if:'type transmission-remote'
+zpm trbjo/zsh-wayland-utils if:'[[ $WAYLAND_DISPLAY ]]'
+zpm trbjo/zsh-file-opener preload:'_ZSH_FILE_OPENER_CMD=u
+    _ZSH_FILE_OPENER_EXCLUDE_SUFFIXES=pdb,exe,srt,part,ytdl,vtt,zwc,dll,otf,ttf,iso,img,mobi,vtt'
+
+zpm trbjo/Neovim-config\
+    if:'type nvim'\
+    where:'${XDG_CONFIG_HOME:-$HOME/.config}/nvim'\
+    postinstall:'nvim +PlugInstall +qall && printf "\e[6 q"'\
+    nosource
+
+zpm trbjo/omnisharp-config\
+    if:'[[ -d /opt/sublime_text ]] && type dotnet'\
+    where:'${HOME}/.omnisharp'\
+    preload:'_dotnet_zsh_complete() { local completions=("$(dotnet complete "${words}")"); reply=( "${(ps:\n:)completions}" ) }; compctl -K _dotnet_zsh_complete dotnet'\
+    nosource
+
+zpm 'https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.38.2/omnisharp-linux-x64.zip'\
+    if:'[[ -d /opt/sublime_text ]] && type dotnet'\
+    where:'${HOME}/.omnisharp-server'\
+    postinstall:'chmod +x "${destination}/bin/mono" "${destination}/omnisharp/OmniSharp.exe"'\
+    nosource
+
+zpm trbjo/userchrome\
+    if:'type firefox'\
+    nosource
+
+zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'~/.tmux/plugins/tpm'\
+    postinstall:'tmux run-shell "${HOME}/.tmux/plugins/tpm/bindings/install_plugins"'
+>>>>>>> c57fe31 (Install fzf function no matter what)
 
 # Dependency of prompt
 zpm romkatv/gitstatus
