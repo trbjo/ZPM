@@ -48,7 +48,7 @@ zpm 'https://github.com/junegunn/fzf/releases/download/0.29.0/fzf-0.29.0-linux_a
     where:'$HOME/.local/bin/fzf'\
     nosource
 
-zpm trbjo/zsh-fzf-functions if:'type fzf && type fd'
+zpm trbjo/zsh-fzf-functions if:'type fzf'
 zpm trbjo/ZshGotoSublimeCurrentDir\
     where:'$XDG_CONFIG_HOME/sublime-text/Packages/ZshGotoSublimeCurrentDir'\
     if:'[[ -d /opt/sublime_text/ ]] && [[ $WAYLAND_DISPLAY ]]'
