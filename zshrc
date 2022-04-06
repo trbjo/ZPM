@@ -1,5 +1,6 @@
-# typeset -g ZPM_NOASYNC && print -n '\e[?25l\e[u'
+# typeset -g ZPM_NOASYNC
 # typeset -g ZPM_DEBUG
+((  ${+ZPM_DEBUG} ||  ${+ZPM_NOASYNC} )) && print -n '\e[?25l\e[u'
 (( ${+ZPM_DEBUG} )) && PROMPT= || () {
     if (( ${+OLDPROMPT} )); then
         PROMPT=$'$OLDPROMPT\e[?25h'
@@ -49,8 +50,8 @@ zpm 'https://github.com/junegunn/fzf/releases/download/0.29.0/fzf-0.29.0-linux_a
     nosource
 
 zpm trbjo/zsh-fzf-functions
-zpm trbjo/ZshGotoSublimeCurrentDir\
-    where:'$XDG_CONFIG_HOME/sublime-text/Packages/ZshGotoSublimeCurrentDir'\
+zpm trbjo/SublimeZshIntegration\
+    where:'$XDG_CONFIG_HOME/sublime-text/Packages/SublimeZshIntegration'\
     if:'[[ -d /opt/sublime_text/ ]] && [[ $WAYLAND_DISPLAY ]]'
 
 zpm trbjo/zsh-multimedia if:'type transmission-remote'
