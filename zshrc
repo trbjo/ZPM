@@ -1,5 +1,6 @@
-# typeset -g ZPM_NOASYNC && print -n '\e[?25l\e[u'
+# typeset -g ZPM_NOASYNC
 # typeset -g ZPM_DEBUG
+((  ${+ZPM_DEBUG} ||  ${+ZPM_NOASYNC} )) && print -n '\e[?25l\e[u'
 (( ${+ZPM_DEBUG} )) && PROMPT= || () {
     if (( ${+OLDPROMPT} )); then
         PROMPT=$'$OLDPROMPT\e[?25h'
