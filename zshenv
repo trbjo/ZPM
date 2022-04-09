@@ -10,31 +10,38 @@
 
 (( ${+SSH_TTY} )) && export TERM="xterm-256color"
 type go > /dev/null 2>&1 && export GOPATH="$HOME/.local/share/go"
+type npm > /dev/null 2>&1 && export NPM_PACKAGES="${HOME}/.npm"
 
 # Remove path duplicates
-typeset -U PATH path fpath
-typeset -aU path_elems
+typeset -U fpath
+export PATH
+path=(
+    ~/.dotnet/tools
+    ~/.npm/bin
+    ~/bin
+    ~/.local/bin
+    ~/.gem/ruby/*/bin(Nn[-1])
+    ~/.opam/current/bin
+    ~/.cabal/bin
+    /usr/local/bin
+    /usr/local/sbin
+    /usr/bin
+    /usr/sbin
+    /sbin
+    /bin
+    /usr/games
+    /usr/games/bin
+)
 
-type npm > /dev/null 2>&1 && {
-    export NPM_PACKAGES="${HOME}/.npm"
-    path_elems+="$NPM_PACKAGES/bin"
-}
-
-type rustup > /dev/null 2>&1 && {
+type rustup > /dev/null 2>&1 && () {
+    local tc=($HOME/.rustup/toolchains/*(ND))
+    (( ${#tc} == 1 )) && path=("${tc}/bin" ${path[@]}) && return
     local toolchain="$(rustup show active-toolchain)"
     if [[ -z "$toolchain" ]]; then
         rustup default nightly
         toolchain="$(rustup show active-toolchain)"
     fi
-    path_elems+="$HOME/.rustup/toolchains/${toolchain/\ \(default\)/}/bin"
+    path=("$HOME/.rustup/toolchains/${toolchain/\ \(default\)/}/bin" ${path[@]})
 }
 
-type dotnet > /dev/null 2>&1 && {
-    path_elems+="$HOME/.dotnet/tools"
-    export DOTNET_CLI_TELEMETRY_OPTOUT=1
-    export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
-}
-
-path=("$path_elems[@]" "$HOME/.local/bin" "$path[@]")
-export PATH
-
+path=( ${(u)^path:A}(N-/) )
