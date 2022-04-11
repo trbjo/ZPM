@@ -88,22 +88,6 @@ zpm trbjo/zsh-prompt-compact preload:"EXTRA_SSH_ENV='git clone https://github.co
 ZPM_LOADED
 
 # - - - - - - - - - - - - - - - - - - - -
-# - - - - - BYTE COMPILING- - - - - - - -
-# - - - - - - - - - - - - - - - - - - - -
-
-compile_or_recompile() {
-    local plugin="$1"
-    set --
-    { [[ -f "${plugin}" ]] && [[ ! -f "${plugin}.zwc" ]] }\
-    || [[ "${plugin}" -nt "${plugin}.zwc" ]] &&\
-    zcompile "${plugin}"
-}
-
-compile_or_recompile "${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}" &!
-compile_or_recompile "${HOME}/.zcompdump" &!
-
-
-# - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - SETOPTS - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
 
