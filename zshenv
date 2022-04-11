@@ -8,7 +8,6 @@
     fi
 }
 
-(( ${+SSH_TTY} )) && export TERM="xterm-256color"
 type go > /dev/null 2>&1 && export GOPATH="$HOME/.local/share/go"
 type npm > /dev/null 2>&1 && export NPM_PACKAGES="${HOME}/.npm"
 
