@@ -5,7 +5,7 @@
     if (( ${+OLDPROMPT} )); then
         PROMPT=$'$OLDPROMPT\e[?25h'
     else
-        PROMPT=$'\e[u\e[36m${PWD/$HOME/~}\n\e[39m${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m '
+        PROMPT=$'\e[u\e[36m${${PWD/#$HOME/\~}//\\//\e[39m\/\e[36m}\e[39m\n\e[39m${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m '
     fi
 }
 
