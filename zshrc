@@ -15,9 +15,6 @@
 
 source "${${${(%):-%N}:A}%/*}/zpm.zsh"
 
-# Sets up LS_COLORS and more
-zpm trbjo/zsh-colors
-
 # sets up zsh completion system, some keybindings, and some useful aliases
 zpm trbjo/zsh-sensible-defaults
 
