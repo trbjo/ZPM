@@ -22,12 +22,14 @@ path=(
     ~/.gem/ruby/*/bin(Nn[-1])
     ~/.opam/current/bin
     ~/.cabal/bin
+    /opt/homebrew/bin
+    /opt/homebrew/sbin
     /usr/local/bin
     /usr/local/sbin
+    /bin
     /usr/bin
     /usr/sbin
     /sbin
-    /bin
     /usr/games
     /usr/games/bin
 )
