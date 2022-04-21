@@ -23,6 +23,7 @@ path=(
     ~/.opam/current/bin
     ~/.cabal/bin
     /opt/homebrew/bin
+    /opt/homebrew/opt/coreutils/libexec/gnubin
     /opt/homebrew/sbin
     /usr/local/bin
     /usr/local/sbin
