@@ -4,7 +4,7 @@
     if (( ${+OLDPROMPT} )); then
         print -Pn -- "\e[?25l\n\n\e[1A\e[s${OLDPROMPT}\e[u\e]2;${PWD/$HOME/\~}\a"
     else
-        print -Pn -- "\e[s\e[36m${${PWD/#$HOME/\~}//\//\e[39m\/\e[36m}\e[39m\n${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m \e]2;${PWD/$HOME/\~}\a"
+        print -Pn -- "\e[s\e[36m${${PWD/#$HOME/\~}//\//\e[39m\/\e[36m}${_read_only_dir:+\e[38;5;18m$_read_only_dir}\e[39m\n${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m \e]2;${PWD/$HOME/\~}\a"
     fi
 }
 
