@@ -1,11 +1,11 @@
 # typeset -g ZPM_NOASYNC
 # typeset -g ZPM_DEBUG
-((  ${+ZPM_DEBUG} ||  ${+ZPM_NOASYNC} )) && print -n '\e[?25l\e[u'
+((  ${+ZPM_DEBUG} ||  ${+ZPM_NOASYNC} )) && print -n '\e[?25l\e8'
 (( ${+ZPM_DEBUG} )) && PROMPT= || () {
     if (( ${+OLDPROMPT} )); then
         PROMPT=$'$OLDPROMPT\e[?25h'
     else
-        PROMPT=$'\e[u\e[36m${${PWD/#$HOME/\~}//\\//\e[39m\/\e[36m}\e[39m\n\e[39m${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m '
+        PROMPT=$'\e8\e[36m${${PWD/#$HOME/\~}//\\//\e[39m\/\e[36m}\e[39m\n\e[39m${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m '
     fi
 }
 
