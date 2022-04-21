@@ -5,7 +5,7 @@
     if (( ${+OLDPROMPT} )); then
         PROMPT=$'$OLDPROMPT\e[?25h'
     else
-        PROMPT=$'\e[u\e[36m${PWD/$HOME/~}\n\e[39m${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m '
+        PROMPT=$'\e[u\e[36m${${PWD/#$HOME/\~}//\\//\e[39m\/\e[36m}\e[39m\n\e[39m${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m '
     fi
 }
 
@@ -14,9 +14,6 @@
 # - - - - - - - - - - - - - - - - - - - -
 
 source "${${${(%):-%N}:A}%/*}/zpm.zsh"
-
-# Sets up LS_COLORS and more
-zpm trbjo/zsh-colors
 
 # sets up zsh completion system, some keybindings, and some useful aliases
 zpm trbjo/zsh-sensible-defaults
@@ -44,35 +41,20 @@ zpm 'https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/docker/_do
         zstyle ":completion:*:*:docker-*:*" option-stacking yes;'\
     nosource
 
+if [[ "$(uname)" == "Linux" ]]; then
 zpm 'https://github.com/junegunn/fzf/releases/download/0.29.0/fzf-0.29.0-linux_amd64.tar.gz'\
     if:'! type fzf'\
     where:'$HOME/.local/bin/fzf'\
     nosource
+fi
 
 zpm trbjo/zsh-fzf-functions
 
 # Dependency of prompt
 zpm romkatv/gitstatus
-zpm trbjo/zsh-prompt-compact
+zpm trbjo/zsh-prompt-compact preload:"EXTRA_SSH_ENV='git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh && exec zsh'"
 
 ZPM_LOADED
-
-
-# - - - - - - - - - - - - - - - - - - - -
-# - - - - - BYTE COMPILING- - - - - - - -
-# - - - - - - - - - - - - - - - - - - - -
-
-compile_or_recompile() {
-    local plugin="$1"
-    set --
-    { [[ -f "${plugin}" ]] && [[ ! -f "${plugin}.zwc" ]] }\
-    || [[ "${plugin}" -nt "${plugin}.zwc" ]] &&\
-    zcompile "${plugin}"
-}
-
-compile_or_recompile "${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}" &!
-compile_or_recompile "${HOME}/.zcompdump" &!
-
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - SETOPTS - - - - - - - - -
