@@ -150,7 +150,7 @@ if type pacman > /dev/null 2>&1; then
         TRAPUSR2() {  }
     fi
     # rehash path after pacman installation
-    TRAPUSR1() { rehash }
+    TRAPUSR1() { rehash; compinit -i }
 fi
 
 alias fdd='fd --no-ignore-vcs --hidden'
