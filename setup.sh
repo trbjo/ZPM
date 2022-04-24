@@ -48,6 +48,27 @@ print
 
 if [[ $ans == "Yes" ]]; then
     git -C "${0:A:h}" switch trbjo
+    if [[ ! -f "${HOME}/.config/htop/htoprc" ]]; then
+        print -l \
+        "# Beware! This file is rewritten by htop when settings are changed in the interface."\
+        "# The parser is also very primitive, and not human-friendly."\
+        "htop_version=3.1.2"\
+        "config_reader_min_version=2"\
+        "fields=0 48 2 46 47 49 1"\
+        "hide_userland_threads=1"\
+        "highlight_base_name=1"\
+        "highlight_deleted_exe=1"\
+        "tree_view=1"\
+        "tree_view_always_by_pid=1"\
+        "header_margin=0"\
+        "show_cpu_temperature=1"\
+        "hide_function_bar=2"\
+        "header_layout=two_50_50"\
+        "column_meters_0=AllCPUs4 Uptime LoadAverage"\
+        "column_meter_modes_0=1 2 2"\
+        "column_meters_1=Memory Swap Tasks Systemd"\
+        "column_meter_modes_1=1 1 2 2" > "${HOME}/.config/htop/htoprc"
+    fi
 fi
 
 autoload -U compinit && compinit -i
