@@ -72,3 +72,4 @@ if [[ $ans == "Yes" ]]; then
 fi
 
 autoload -U compinit && compinit -i
+exec zsh
