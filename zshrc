@@ -134,9 +134,6 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTORY_IGNORE='([bf]g *|[bf]g|disown|cd ..|cd -)' # Don't add these to the history file.
 
-# do not add incorrect commands to history
-zshaddhistory() { whence ${${(z)1}[1]} >| /dev/null || return 1 }
-
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - ALIASES - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
