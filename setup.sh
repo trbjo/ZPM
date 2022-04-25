@@ -11,7 +11,6 @@ for filename in $files; do
         print -l "$file exists, want do you want to do?"\
                  "  [D]elete original"\
                  "  [B]ackup original"\
-                 "  [S]kip this file"\
                  "  [Q]uit"
         unset ans
         until [[ ! -z $ans ]]; do
