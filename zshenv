@@ -11,6 +11,8 @@
 type go > /dev/null 2>&1 && export GOPATH="$HOME/.local/share/go"
 type npm > /dev/null 2>&1 && export NPM_PACKAGES="${HOME}/.npm"
 
+export XDG_CONFIG_HOME="${HOME}/.config"
+
 # Remove path duplicates
 typeset -U fpath
 export PATH
