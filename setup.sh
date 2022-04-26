@@ -48,6 +48,7 @@ print
 if [[ $ans == "Yes" ]]; then
     git -C "${0:A:h}" switch trbjo
     if [[ ! -f "${HOME}/.config/htop/htoprc" ]]; then
+        mkdir -p "${HOME}/.config/htop/"
         print -l \
         "# Beware! This file is rewritten by htop when settings are changed in the interface."\
         "# The parser is also very primitive, and not human-friendly."\
