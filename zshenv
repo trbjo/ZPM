@@ -1,11 +1,16 @@
 # set up the fake prompt while we wait for the plugins to initialize
 [[ -o INTERACTIVE && -t 2 ]] && () {
     PROMPT_EOL_MARK=
-    if (( ${+OLDPROMPT} )); then
-        print -Pn -- "\e[?25l\n\n\e[1A\e7${OLDPROMPT}\e8\e]2;${PWD/$HOME/\~}\a"
-    else
-        print -Pn -- "\e7\e[36m${${PWD/#$HOME/\~}//\//\e[39m\/\e[36m}${_read_only_dir:+\e[38;5;18m$_read_only_dir}\e[39m\n${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m \e]2;${PWD/$HOME/\~}\a"
-    fi
+
+    PROMPT_STR=%F{6}${${PWD/#$HOME/\~}//\//%F{fg_default_code}\/%F{6}}%{$reset_color%}%F{fg_default_code}
+    PROMPT_STR+=$'$PROMPT_READ_ONLY_DIR'
+    PROMPT_STR+='${GITSTATUS+%B${GITSTATUS_BLUE}%b%f}'
+    typeset zero='%([BSUbfksu]|([FK]|){*})'
+    (( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} > COLUMNS / 3 )) && PROMPT_STR+=$'\n' || PROMPT_STR+=' '
+    PROMPT_STR+='${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }'
+    PROMPT_STR+='%F{5}❯%f '
+
+    print -Pn -- "\e7${(e)PROMPT_STR}\e]2;${PWD/$HOME/\~}\a"
 }
 
 type go > /dev/null 2>&1 && export GOPATH="$HOME/.local/share/go"

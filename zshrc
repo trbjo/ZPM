@@ -1,12 +1,8 @@
 # typeset -g ZPM_NOASYNC
 # typeset -g ZPM_DEBUG
-((  ${+ZPM_DEBUG} ||  ${+ZPM_NOASYNC} )) && print -n '\e[?25l\e8'
+((  ${+ZPM_DEBUG} || ${+ZPM_NOASYNC} )) && print -n '\e[?25l'
 (( ${+ZPM_DEBUG} )) && PROMPT= || () {
-    if (( ${+OLDPROMPT} )); then
-        PROMPT=$'$OLDPROMPT\e[?25h'
-    else
-        PROMPT=$'\e8\e[36m${${PWD/#$HOME/\~}//\\//\e[39m\/\e[36m}\e[39m\n\e[39m${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m '
-    fi
+    PROMPT=$'\e8'${PROMPT_STR}
 }
 
 # - - - - - - - - - - - - - - - - - - - -
@@ -118,13 +114,14 @@ setopt histignorespace
 
 setopt hist_reduce_blanks       # remove unnecessary blanks
 setopt bang_hist                # Treat The '!' Character Specially During Expansion.
-setopt inc_append_history       # Write To The History File Immediately, Not When The Shell Exits.
 setopt share_history            # Share History Between All Sessions.
 setopt hist_expire_dups_first   # Expire A Duplicate Event First When Trimming History.
 setopt hist_ignore_dups         # Do Not Record An Event That Was Just Recorded Again.
 setopt hist_ignore_all_dups     # Delete An Old Recorded Event If A New Event Is A Duplicate.
 setopt hist_find_no_dups        # Do Not Display A Previously Found Event.
 setopt extended_history         # Show Timestamp In History.
+setopt inc_append_history       # Write To The History File Immediately, Not When The Shell Exits.
+setopt inc_append_history_time  # append command to history file immediately after execution
 
 setopt prompt_subst             # allow prompt substitution
 
