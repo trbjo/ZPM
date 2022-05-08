@@ -1,6 +1,6 @@
 # typeset -g ZPM_NOASYNC
 # typeset -g ZPM_DEBUG
-((  ${+ZPM_DEBUG} || ${+ZPM_NOASYNC} )) && print -n '\e[?25l'
+((  ${+ZPM_DEBUG} || ${+ZPM_NOASYNC} )) && print -n '\e[?25l\e8'
 (( ${+ZPM_DEBUG} )) && PROMPT= || () {
     PROMPT=$'\e8'${PROMPT_STR}
 }
