@@ -16,8 +16,14 @@
 
 type go > /dev/null 2>&1 && export GOPATH="$HOME/.local/share/go"
 type npm > /dev/null 2>&1 && export NPM_PACKAGES="${HOME}/.npm"
+type bat > /dev/null 2>&1 && export BAT_THEME=base16
 
 export XDG_CONFIG_HOME="${HOME}/.config"
+
+type dotnet > /dev/null 2>&1 && {
+    export DOTNET_CLI_TELEMETRY_OPTOUT=1
+    export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+}
 
 # Remove path duplicates
 typeset -U fpath
