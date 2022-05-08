@@ -6,7 +6,8 @@
     PROMPT_STR+=$'$PROMPT_READ_ONLY_DIR'
     PROMPT_STR+='${GITSTATUS+%B${GITSTATUS_BLUE}%b%f}'
     typeset zero='%([BSUbfksu]|([FK]|){*})'
-    (( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} > COLUMNS / 3 )) && PROMPT_STR+=$'\n' || PROMPT_STR+=' '
+    (( ${+PROMPT_SSH_NAME} )) && integer myint=$(( ${#PROMPT_SSH_NAME} + 3 ))
+    (( ( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} + ${myint-0} )  > COLUMNS / 3 )) && PROMPT_STR+=$'\n' || PROMPT_STR+=' '
     PROMPT_STR+='${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }'
     PROMPT_STR+='%F{5}❯%f '
 
