@@ -1,15 +1,9 @@
-# typeset -g ZPM_NOASYNC
-# typeset -g ZPM_DEBUG
-((  ${+ZPM_DEBUG} || ${+ZPM_NOASYNC} )) && print -n '\e[?25l\e8'
-(( ${+ZPM_DEBUG} )) && PROMPT= || () {
-    PROMPT=$'\e8'${PROMPT_STR}
-}
+# source plugin manager
+source "${${${(%):-%N}:A}%/*}/zpm.zsh"
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - PLUGINS - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
-
-source "${${${(%):-%N}:A}%/*}/zpm.zsh"
 
 # sets up zsh completion system, some keybindings, and some useful aliases
 zpm trbjo/zsh-sensible-defaults
