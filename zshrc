@@ -1,5 +1,6 @@
 # source plugin manager
 source "${${${(%):-%N}:A}%/*}/zpm.zsh"
+PROMPT=${PROMPT_STR}
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - PLUGINS - - - - - - - - -

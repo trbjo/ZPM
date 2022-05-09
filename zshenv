@@ -8,17 +8,17 @@
     (( ${+SSH_CONNECTION} )) && export TERM='xterm-256color' && _ssh="[${PROMPT_SSH_NAME:0:12}${${PROMPT_SSH_NAME[13,-1]}:+…}] "
     PROMPT_WS_SEP=' '
 
-    PROMPT=$'\e8'
-    PROMPT+='${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }'
-    PROMPT+=%F{6}${${PWD/#$HOME/\~}//\//%F{fg_default_code}\/%F{6}}%F{fg_default_code}
-    PROMPT+='$PROMPT_READ_ONLY_DIR'
-    PROMPT+='${GITSTATUS+%B${GITSTATUS_BLUE}%b%f}'
-    PROMPT+='${PROMPT_WS_SEP}'
-    PROMPT+='%F{5}❯%f '
+    PROMPT_STR=$'\e8'
+    PROMPT_STR+='${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }'
+    PROMPT_STR+=%F{6}${${PWD/#$HOME/\~}//\//%F{fg_default_code}\/%F{6}}%F{fg_default_code}
+    PROMPT_STR+='$PROMPT_READ_ONLY_DIR'
+    PROMPT_STR+='${GITSTATUS+%B${GITSTATUS_BLUE}%b%f}'
+    PROMPT_STR+='${PROMPT_WS_SEP}'
+    PROMPT_STR+='%F{5}❯%f '
     typeset zero='%([BSUbfksu]|([FK]|){*})'
-    (( ${#${(S%%)${(e)PROMPT}//$~zero/}} > COLUMNS / 2 )) && PROMPT_WS_SEP=$'\n'
+    (( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} > COLUMNS / 2 )) && PROMPT_WS_SEP=$'\n'
 
-    print -Pn -- "\e7${(e)PROMPT}\e]2;$_ssh${PWD/$HOME/\~}\a"
+    print -Pn -- "\e7${(e)PROMPT_STR}\e]2;$_ssh${PWD/$HOME/\~}\a${ZPM_NOASYNC+\e8}"
 }
 
 type go > /dev/null 2>&1 && export GOPATH="$HOME/.local/share/go"
