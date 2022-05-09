@@ -2,7 +2,7 @@
 [[ -o INTERACTIVE && -t 2 ]] && () {
     PROMPT_EOL_MARK=
     # typeset -g ZPM_NOASYNC
-    typeset -g ZPM_DEBUG && return
+    # typeset -g ZPM_DEBUG && return
 
     # colors won't render correctly if the shell does not know about terminal capabilities
     (( ${+SSH_CONNECTION} )) && export TERM='xterm-256color' && _ssh="[${PROMPT_SSH_NAME:0:12}${${PROMPT_SSH_NAME[13,-1]}:+…}] "
