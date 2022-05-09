@@ -1,15 +1,16 @@
 # set up the fake prompt while we wait for the plugins to initialize
 [[ -o INTERACTIVE && -t 2 ]] && () {
     PROMPT_EOL_MARK=
+    PROMPT_WS_SEP=' '
 
-    PROMPT_STR=%F{6}${${PWD/#$HOME/\~}//\//%F{fg_default_code}\/%F{6}}%{$reset_color%}%F{fg_default_code}
+    PROMPT_STR='${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }'
+    PROMPT_STR+=%F{6}${${PWD/#$HOME/\~}//\//%F{fg_default_code}\/%F{6}}%F{fg_default_code}
     PROMPT_STR+=$'$PROMPT_READ_ONLY_DIR'
     PROMPT_STR+='${GITSTATUS+%B${GITSTATUS_BLUE}%b%f}'
-    typeset zero='%([BSUbfksu]|([FK]|){*})'
-    (( ${+PROMPT_SSH_NAME} )) && integer myint=$(( ${#PROMPT_SSH_NAME} + 3 ))
-    (( ( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} + ${myint-0} )  > COLUMNS / 3 )) && PROMPT_STR+=$'\n' || PROMPT_STR+=' '
-    PROMPT_STR+='${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }'
+    PROMPT_STR+='${PROMPT_WS_SEP}'
     PROMPT_STR+='%F{5}❯%f '
+    typeset zero='%([BSUbfksu]|([FK]|){*})'
+    (( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} > COLUMNS / 2 )) && PROMPT_WS_SEP=$'\n' || PROMPT_WS_SEP=' '
 
     print -Pn -- "\e7${(e)PROMPT_STR}\e]2;${PWD/$HOME/\~}\a"
 }
