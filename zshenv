@@ -1,5 +1,7 @@
 # set up the fake prompt while we wait for the plugins to initialize
 [[ -o INTERACTIVE && -t 2 ]] && () {
+    # colors won't render correctly if the shell does not know about terminal capabilities
+    (( ${+SSH_CONNECTION} )) && export TERM='xterm-256color'
     PROMPT_EOL_MARK=
     PROMPT_WS_SEP=' '
 
@@ -10,7 +12,7 @@
     PROMPT_STR+='${PROMPT_WS_SEP}'
     PROMPT_STR+='%F{5}❯%f '
     typeset zero='%([BSUbfksu]|([FK]|){*})'
-    (( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} > COLUMNS / 2 )) && PROMPT_WS_SEP=$'\n' || PROMPT_WS_SEP=' '
+    (( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} > COLUMNS / 2 )) && PROMPT_WS_SEP=$'\n'
 
     print -Pn -- "\e7${(e)PROMPT_STR}\e]2;${PWD/$HOME/\~}\a"
 }
