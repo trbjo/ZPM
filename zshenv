@@ -2,13 +2,13 @@
 [[ -o INTERACTIVE && -t 2 ]] && () {
     PROMPT_EOL_MARK=
     # typeset -g ZPM_NOASYNC
-    # typeset -g ZPM_DEBUG && return
+    # typeset -g ZPM_DEBUG
 
     # colors won't render correctly if the shell does not know about terminal capabilities
     (( ${+SSH_CONNECTION} )) && export TERM='xterm-256color' && _ssh="[${PROMPT_SSH_NAME:0:12}${${PROMPT_SSH_NAME[13,-1]}:+…}] "
     PROMPT_WS_SEP=' '
 
-    PROMPT_STR=$'\e8'
+    PROMPT_STR=$'${ZPM_DEBUG-\e8}'
     PROMPT_STR+='${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }'
     PROMPT_STR+=%F{6}${${PWD/#$HOME/\~}//\//%F{fg_default_code}\/%F{6}}%F{fg_default_code}
     PROMPT_STR+='$PROMPT_READ_ONLY_DIR'
