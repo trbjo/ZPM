@@ -39,7 +39,7 @@ zpm 'https://github.com/junegunn/fzf/releases/download/0.29.0/fzf-0.29.0-linux_a
 
 zpm trbjo/zsh-fzf-functions
 zpm trbjo/SublimeZshIntegration\
-    where:'$XDG_CONFIG_HOME/sublime-text/Packages/SublimeZshIntegration'\
+    where:'${XDG_CONFIG_HOME:-$HOME/.config}/sublime-text/Packages/SublimeZshIntegration'\
     if:'[[ -d /opt/sublime_text/ ]] && [[ $WAYLAND_DISPLAY ]]'
 
 zpm trbjo/zsh-multimedia if:'type transmission-remote'
