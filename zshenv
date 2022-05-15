@@ -18,7 +18,7 @@
     typeset zero='%([BSUbfksu]|([FK]|){*})'
     (( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} > COLUMNS / 2 )) && PROMPT_WS_SEP=$'\n'
 
-    print -Pn -- "\e7${(e)PROMPT_STR}\e]2;$_ssh${PWD/$HOME/\~}\a${ZPM_NOASYNC+\e8}"
+    print -Pn -- "\e7${(e)PROMPT_STR}\e]2;$_ssh${PWD/$HOME/\~}\a${ZPM_NOASYNC+\e8}${SSH_CONNECTION+\e[?25l\r}"
 }
 
 type go > /dev/null 2>&1 && export GOPATH="$HOME/.local/share/go"
