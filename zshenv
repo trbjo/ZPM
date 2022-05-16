@@ -16,7 +16,7 @@
     PROMPT_STR+='${PROMPT_WS_SEP}'
     PROMPT_STR+='%F{5}❯%f '
     typeset zero='%([BSUbfksu]|([FK]|){*})'
-    (( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} > COLUMNS / 2 )) && PROMPT_WS_SEP=$'\n'
+    (( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} > COLUMNS / 3 )) && PROMPT_WS_SEP=$'\n'
 
     print -Pn -- "\e7${(e)PROMPT_STR}\e]2;$_ssh${PWD/$HOME/\~}\a${ZPM_NOASYNC+\e8}${SSH_CONNECTION+\e[?25l\r}"
 }
