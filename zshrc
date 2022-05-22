@@ -84,7 +84,6 @@ ZPM_LOADED
 
 WORDCHARS=${WORDCHARS//[\/\.&=]}
 
-setopt no_case_glob             # Make globbing case insensitive.
 setopt extendedglob             # Use Extended Globbing.
 setopt autocd                   # Automatically Change Directory If A Directory Is Entered.
 LISTMAX=999                     # Disable 'do you wish to see all %d possibilities'
