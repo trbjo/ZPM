@@ -16,8 +16,8 @@ zpm 'https://raw.githubusercontent.com/trbjo/czmod-compiled/master/czmod'\
     where:'$HOME/.local/bin/czmod'\
     nosource
 
-zpm zdharma-continuum/fast-syntax-highlighting
-zpm zsh-users/zsh-autosuggestions postload:'ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=6,underline'
+zpm zsh-users/zsh-syntax-highlighting
+zpm zsh-users/zsh-autosuggestions postload:'ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=cyan,underline'
 
 # Adds functionality to buffer. Autopairing of quotes, etc.
 zpm trbjo/zsh-goodies preload:'KEYTIMEOUT=1; setopt AUTO_PUSHD'
