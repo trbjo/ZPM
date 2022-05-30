@@ -6,14 +6,13 @@
 
     # colors won't render correctly if the shell does not know about terminal capabilities
     (( ${+SSH_CONNECTION} )) && export TERM='xterm-256color' && _ssh="[${PROMPT_SSH_NAME:0:12}${${PROMPT_SSH_NAME[13,-1]}:+…}] "
-    PROMPT_WS_SEP=' '
 
     PROMPT_STR=$'${ZPM_DEBUG-\e8}'
     PROMPT_STR+='${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }'
     PROMPT_STR+=%F{6}${${PWD/#$HOME/\~}//\//%F{fg_default_code}\/%F{6}}%F{fg_default_code}
     PROMPT_STR+='$PROMPT_READ_ONLY_DIR'
     PROMPT_STR+='${GITSTATUS:+%B%F{6}${GITSTATUS[7,${#GITSTATUS}]}'
-    PROMPT_STR+='${PROMPT_WS_SEP}'
+    PROMPT_STR+='${PROMPT_WS_SEP:- }'
     PROMPT_STR+='%F{5}❯%f '
     typeset zero='%([BSUbfksu]|([FK]|){*})'
     (( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} > COLUMNS / 3 )) && PROMPT_WS_SEP=$'\n'
