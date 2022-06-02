@@ -146,3 +146,4 @@ alias fix_whitespace="git ls-tree -r master --name-only | xargs sed -i 's/[ \t]*
 alias g=git
 alias LG='doas /usr/bin/LG_ultrafine_brightness'
 alias nmctl='doas /usr/bin/networkctl'
+alias su='su -l'
