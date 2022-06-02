@@ -17,7 +17,13 @@
     typeset zero='%([BSUbfksu]|([FK]|){*})'
     (( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} > COLUMNS / 3 )) && PROMPT_WS_SEP=$'\n'
 
-    print -Pn -- "\e7${(e)PROMPT_STR}\e]2;$_ssh${PWD/$HOME/\~}\a${ZPM_NOASYNC+\e8}${SSH_CONNECTION+\e[?25l\r}"
+    local termpos
+    print -Pn -- "\e7${(e)PROMPT_STR}\e]2;$_ssh${PWD/$HOME/\~}\a${ZPM_NOASYNC+\e8}\033[6n"
+    # To avoid printing the prompt twice, we check if we are on the last line in the terminal.
+    read -t 1 -s -d 'R' termpos
+    if (( ${${termpos##*\[}%;*} == LINES )); then
+        print -n '\e[?25l\r'
+    fi
 }
 
 type go > /dev/null 2>&1 && export GOPATH="$HOME/.local/share/go"
