@@ -323,7 +323,7 @@ _eval_expr() {
 }
 
 (( ${+ZPM_DEBUG} )) && {
-    _zpm_out=/dev/stdout
+    _zpm_out=/dev/tty
     typeset -a _zplgs_remote
     zmodload zsh/datetime
     zpm() {
