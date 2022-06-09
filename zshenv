@@ -35,14 +35,15 @@ type dotnet > /dev/null 2>&1 && {
     export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
 }
 
-#[[ -z $WAYLAND_DISPLAY ]] && () {
+[[ -z $WAYLAND_DISPLAY ]] && () {
+    [[ -n $EDITOR ]] && return
     type nvim > /dev/null 2>&1 && export EDITOR=nvim && return
     type vim > /dev/null 2>&1 && export EDITOR=vim && return
     type emacs > /dev/null 2>&1 && export EDITOR='emacs -nw' && return
     type nano > /dev/null 2>&1 && export EDITOR=nano && return
 }
 
- Remove path duplicates
+# Remove path duplicates
 typeset -U fpath
 export PATH
 path=(
