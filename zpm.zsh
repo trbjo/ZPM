@@ -289,7 +289,7 @@ ZPM_LOADED() {
     print -n '\e[?25h'
     unfunction ZPM_LOADED
     zpm() {
-        if [[ ! "$1" =~ '^(force|pull|reset|show)$' ]]; then
+        if [[ ! "$1" =~ '^(force|pull|reset|show|status)$' ]]; then
             print -l "Plugins must be put in $(_colorizer_abs_path ${ZDOTDIR:-$HOME}/.zshrc) to be loaded."\
             "Interactive usage: zpm <command> [<plugins>]\n"\
             "Commands:"\
@@ -305,6 +305,7 @@ ZPM_LOADED() {
             [[ ${@} ]] && _zpm="${_zplgs[(r)*/$plg]}" || _zpm="$plg"
             [[ -z "$_zpm" ]] && _ppn "" $plg 0 " is not an installed plugin" && continue || plg="$_zpm"
             (( ${+show} )) && _ppn "" "$plg" 26 "➔  $(_colorizer_abs_path $plg)" && continue
+            (( ${+status} )) && _ppn "" "$plg" && git -C ${plg} status --porcelain --short 2> $_zpm_out && continue
             (( ${+reset} )) && { [[ "$plg" != "$ZPM" ]] && rm -rf $plg; continue }
             [[ ! -d "${plg}/.git" ]] && _ppn "\e[38;5;242mSkipping " "$plg" 27 "\e[38;5;242mNot a git repository.\e[0m" && continue
             (( ${+force} )) && git -C "$plg" reset --hard HEAD > $_zpm_out 2>&1

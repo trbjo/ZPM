@@ -26,23 +26,6 @@
     fi
 }
 
-type go > /dev/null 2>&1 && export GOPATH="$HOME/.local/share/go"
-type npm > /dev/null 2>&1 && export NPM_PACKAGES="${HOME}/.npm"
-type bat > /dev/null 2>&1 && export BAT_THEME=base16
-
-type dotnet > /dev/null 2>&1 && {
-    export DOTNET_CLI_TELEMETRY_OPTOUT=1
-    export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
-}
-
-[[ -z $WAYLAND_DISPLAY ]] && () {
-    [[ -n $EDITOR ]] && return
-    type nvim > /dev/null 2>&1 && export EDITOR=nvim && return
-    type vim > /dev/null 2>&1 && export EDITOR=vim && return
-    type emacs > /dev/null 2>&1 && export EDITOR='emacs -nw' && return
-    type nano > /dev/null 2>&1 && export EDITOR=nano && return
-}
-
 # Remove path duplicates
 typeset -U fpath
 export PATH
@@ -67,6 +50,16 @@ path=(
     /usr/games
     /usr/games/bin
 )
+path=( ${(u)^path:A}(N-/) )
+
+type go > /dev/null 2>&1 && export GOPATH="$HOME/.local/share/go"
+type npm > /dev/null 2>&1 && export NPM_PACKAGES="${HOME}/.npm"
+type bat > /dev/null 2>&1 && export BAT_THEME=base16
+
+type dotnet > /dev/null 2>&1 && {
+    export DOTNET_CLI_TELEMETRY_OPTOUT=1
+    export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+}
 
 type rustup > /dev/null 2>&1 && () {
     local tc=($HOME/.rustup/toolchains/*(ND))
@@ -79,4 +72,9 @@ type rustup > /dev/null 2>&1 && () {
     path=("$HOME/.rustup/toolchains/${toolchain/\ \(default\)/}/bin" ${path[@]})
 }
 
-path=( ${(u)^path:A}(N-/) )
+[[ -z $EDITOR ]] && () {
+    type nvim > /dev/null 2>&1 && export EDITOR=nvim && return
+    type vim > /dev/null 2>&1 && export EDITOR=vim && return
+    type emacs > /dev/null 2>&1 && export EDITOR='emacs -nw' && return
+    type nano > /dev/null 2>&1 && export EDITOR=nano && return
+}
