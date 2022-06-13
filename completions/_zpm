@@ -1,7 +1,8 @@
 #compdef zpm
 _arguments '1: :->action' '*: :->name'
 local -a subcmds=('pull:Do a git pull' 'force:Hard reset repo and git pull'
-         'show:List plugins' 'reset:Delete the repo and start anew')
+         'dirty:show dirty repositories' 'show:List plugins'
+         'reset:Delete the repo and start anew')
 case $state in
     (action) _describe 'Commands' subcmds ;;
     (*)
