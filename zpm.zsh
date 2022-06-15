@@ -306,7 +306,7 @@ ZPM_LOADED() {
             [[ ${@} ]] && _zpm="${_zplgs[(r)*/$plg]}" || _zpm="$plg"
             [[ -z "$_zpm" ]] && _ppn "" $plg 0 " is not an installed plugin" && continue || plg="$_zpm"
             (( ${+_show} )) && _ppn "" "$plg" 26 "➔  $(_colorizer_abs_path $plg)" && continue
-            (( ${+_dirty} )) && (){ local _gitstatus="$(git -c color.ui=always -C ${plg} status --short 2> $_zpm_out)" && (( ${#_gitstatus} > 1 )) && _ppn "" "$plg" && print $_gitstatus; continue }
+            (( ${+_dirty} )) && (){ [[ -d "${plg}/.git" ]] && local _gs="$(git -c color.ui=always -C ${plg} status --short 2> $_zpm_out)" && (( ${#_gs} > 1 )) && _ppn "" "$plg" && print $_gs; continue }
             (( ${+_reset} )) && { [[ "$plg" != "$ZPM" ]] && rm -rf $plg; continue }
             [[ ! -d "${plg}/.git" ]] && _ppn "\e[38;5;242mSkipping " "$plg" 27 "\e[38;5;242mNot a git repository.\e[0m" && continue
             (( ${+_force} )) && git -C "$plg" reset --hard HEAD > $_zpm_out 2>&1
@@ -314,7 +314,7 @@ ZPM_LOADED() {
             git -C ${plg} pull 2> $_zpm_out ||\
             print "\e[31mFailed to update\e[0m"
         done
-        (( ${+show} )) || exec $(which zsh)
+        (( ${+_show} )) || (( ${+_dirty} )) || exec $(which zsh)
     }
 }
 
