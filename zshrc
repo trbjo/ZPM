@@ -117,6 +117,7 @@ setopt extended_history         # Show Timestamp In History.
 setopt inc_append_history       # Write To The History File Immediately, Not When The Shell Exits.
 setopt inc_append_history_time  # append command to history file immediately after execution
 
+setopt interactive_comments     # allow comments in commands. Useful for postfixing a comment to a command
 setopt prompt_subst             # allow prompt substitution
 
 # History.
