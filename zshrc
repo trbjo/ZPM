@@ -126,6 +126,10 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTORY_IGNORE='([bf]g *|[bf]g|disown|cd ..|cd -)' # Don't add these to the history file.
 
+# activate direnv and pyenv if they can be found
+type direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
+type pyenv > /dev/null 2>&1 && eval "$(pyenv init -)"
+
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - ALIASES - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
