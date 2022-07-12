@@ -69,7 +69,7 @@ zpm trbjo/userchrome\
     if:'type firefox'\
     nosource
 
-zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'~/.tmux/plugins/tpm'\
+zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'$HOME/.tmux/plugins/tpm'\
     postinstall:'tmux run-shell "${HOME}/.tmux/plugins/tpm/bindings/install_plugins"'
 
 # Dependency of prompt
@@ -153,4 +153,4 @@ alias LG='doas /usr/bin/LG_ultrafine_brightness'
 alias nmctl='doas /usr/bin/networkctl'
 alias up='doas /usr/bin/networkctl up'
 alias down='doas /usr/bin/networkctl down'
-alias su='su -l'
+alias su='chmod o+rw $(tty); su -l'
