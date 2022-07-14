@@ -153,3 +153,8 @@ alias nmctl='doas /usr/bin/networkctl'
 alias up='doas /usr/bin/networkctl up'
 alias down='doas /usr/bin/networkctl down'
 alias su='chmod o+rw $(tty); su -l'
+
+# after this config, the user can use his own aliases in the file ~/.zshrc.local.zsh
+if [[ -e "$HOME/.zshrc.local.zsh" ]]; then
+    source "$HOME/.zshrc.local.zsh"
+fi
