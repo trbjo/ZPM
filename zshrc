@@ -74,7 +74,7 @@ zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'$HOME/.tm
 
 # Dependency of prompt
 zpm romkatv/gitstatus
-zpm trbjo/zsh-prompt-compact preload:"TRAPWINCH() { zle && prompt_split_lines 2> /dev/null && { zle reset-prompt } }; EXTRA_SSH_ENV='git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh && exec zsh'"
+zpm trbjo/zsh-prompt-compact preload:"typeset -g __PROMPT_NEWLINE; TRAPWINCH() { zle && prompt_split_lines 2> /dev/null && { zle reset-prompt } }; EXTRA_SSH_ENV='git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh && exec zsh'"
 
 ZPM_LOADED
 
