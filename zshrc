@@ -127,7 +127,7 @@ SAVEHIST=10000
 HISTORY_IGNORE='([bf]g *|[bf]g|disown|cd ..|cd -)' # Don't add these to the history file.
 
 # activate direnv if it can be found
-type direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
+type direnv > /dev/null 2>&1 && zsh-defer eval "$(direnv hook zsh)"
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - ALIASES - - - - - - - - -
