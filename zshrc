@@ -127,7 +127,14 @@ SAVEHIST=10000
 HISTORY_IGNORE='([bf]g *|[bf]g|disown|cd ..|cd -)' # Don't add these to the history file.
 
 # activate direnv if it can be found
-type direnv > /dev/null 2>&1 && zsh-defer eval "$(direnv hook zsh)"
+if type zsh-defer > /dev/null 2>&1; then
+    type direnv > /dev/null 2>&1 && zsh-defer eval "$(direnv hook zsh)"
+    type pyenv > /dev/null 2>&1 && zsh-defer eval "$(pyenv init -)"
+else
+    type direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
+    type pyenv > /dev/null 2>&1 && eval "$(pyenv init -)"
+fi
+
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - ALIASES - - - - - - - - -
@@ -139,7 +146,7 @@ if type pacman > /dev/null 2>&1; then
     if [[ $PopUp ]] && type subl > /dev/null 2>&1; then
         TRAPUSR2() {zle clear-screen ; subl=true fzf-clipman }
     else
-        TRAPUSR2() {  }
+        TRAPUSR2() { }
     fi
     # rehash path after pacman installation
     TRAPUSR1() { rehash; compinit -i }
