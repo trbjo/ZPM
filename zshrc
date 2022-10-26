@@ -153,6 +153,9 @@ if type pacman > /dev/null 2>&1; then
 fi
 
 alias fdd='fd --no-ignore-vcs --hidden'
+alias vpn_start='doas /usr/bin/systemctl start openvpn.service'
+alias vpn_stop='doas /usr/bin/systemctl stop openvpn.service'
+alias vpn_restart='doas /usr/bin/systemctl restart openvpn.service'
 alias fix_whitespace="git ls-tree -r master --name-only | xargs sed -i 's/[ \t]*$//'"
 alias g=git
 alias LG='doas /usr/bin/LG_ultrafine_brightness'
@@ -160,6 +163,7 @@ alias nmctl='doas /usr/bin/networkctl'
 alias up='doas /usr/bin/networkctl up'
 alias down='doas /usr/bin/networkctl down'
 alias su='chmod o+rw $(tty); su -l'
+alias restart_wifi='doas /usr/bin/systemctl restart iwd.service'
 
 # after this config, the user can use his own aliases in the file ~/.zshrc.local.zsh
 if [[ -e "$HOME/.zshrc.local.zsh" ]]; then

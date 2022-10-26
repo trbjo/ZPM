@@ -11,7 +11,7 @@
     PROMPT_STR+='${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }'
     PROMPT_STR+=%F{6}${${PWD/#$HOME/\~}//\//%F{fg_default_code}\/%F{6}}%F{fg_default_code}
     PROMPT_STR+='$PROMPT_READ_ONLY_DIR'
-    PROMPT_STR+='${GITSTATUS:+%B%F{6}${GITSTATUS[7,${#GITSTATUS}]}'
+    PROMPT_STR+='${GITSTATUS:+%B%F{4}${GITSTATUS[7,${#GITSTATUS}]}'
     PROMPT_STR+='${PROMPT_WS_SEP:- }'
     PROMPT_STR+='%F{5}❯%f '
     typeset zero='%([BSUbfksu]|([FK]|){*})'
