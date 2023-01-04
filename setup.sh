@@ -3,6 +3,7 @@
 local -a files=("zshrc" "zshenv")
 local -a files_to_source
 local filename file ans reply file_to_source
+local localconf="zshrc.local.zsh"
 local location="${ZDOTDIR:-$HOME}"
 
 for filename in $files; do
@@ -47,6 +48,7 @@ print
 
 if [[ $ans == "Yes" ]]; then
     git -C "${0:A:h}" switch trbjo
+    ln -s "${0:A:h}/${localconf}" "${location}/.${localconf}"
     if [[ ! -f "${HOME}/.config/htop/htoprc" ]]; then
         mkdir -p "${HOME}/.config/htop/"
         print -l \
