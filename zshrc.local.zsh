@@ -12,12 +12,12 @@ fi
 
 zpm trbjo/zsh-multimedia if:'type transmission-remote'
 zpm trbjo/zsh-wayland-utils if:'[[ $WAYLAND_DISPLAY ]]'
-zpm trbjo/zsh-file-opener preload:'_ZSH_FILE_OPENER_CMD=u'
 
 zpm trbjo/SublimeZshIntegration\
     where:'${XDG_CONFIG_HOME:-$HOME/.config}/sublime-text/Packages/SublimeZshIntegration'\
     if:'[[ -d /opt/sublime_text/ ]] && [[ $WAYLAND_DISPLAY ]]'
 
+zpm trbjo/zsh-file-opener preload:'_ZSH_FILE_OPENER_CMD=u'
 
 zpm trbjo/Neovim-config\
     if:'type nvim'\
