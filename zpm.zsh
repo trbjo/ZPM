@@ -296,7 +296,7 @@ ZPM_LOADED() {
             "  force  --  Hard reset repo and git pull"\
             "  pull   --  Do a git pull"\
             "  reset  --  Delete the repo and start anew"\
-            "  dirty --  Show dirty repositories status"\
+            "  dirty  --  Show dirty repositories status"\
             "  show   --  List plugins"
             return 1
         fi
@@ -314,7 +314,7 @@ ZPM_LOADED() {
             git -C ${plg} pull 2> $_zpm_out ||\
             print "\e[31mFailed to update\e[0m"
         done
-        (( ${+_show} )) || (( ${+_dirty} )) || exec $(which zsh)
+        (( ${+_show} )) || (( ${+_dirty} )) || exec zsh
     }
 }
 

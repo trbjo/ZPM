@@ -10,7 +10,8 @@ PROMPT=${PROMPT_STR}
 zpm trbjo/zsh-sensible-defaults
 
 # Sets up the z command in a fast lua implementation
-zpm skywind3000/z.lua if:'type lua' preload:'_ZL_CMD=h'\
+zpm skywind3000/z.lua if:'type lua'\
+    preload:'_ZL_CMD=h'\
     postload:'_zlua_precmd() {czmod --add "${PWD:a}" &! }'&&\
 zpm 'https://raw.githubusercontent.com/trbjo/czmod-compiled/master/czmod'\
     where:'$HOME/.local/bin/czmod'\
@@ -38,45 +39,10 @@ zpm 'https://github.com/junegunn/fzf/releases/download/0.29.0/fzf-0.29.0-linux_a
     nosource
 
 zpm trbjo/zsh-fzf-functions
-zpm trbjo/SublimeZshIntegration\
-    where:'${XDG_CONFIG_HOME:-$HOME/.config}/sublime-text/Packages/SublimeZshIntegration'\
-    if:'[[ -d /opt/sublime_text/ ]] && [[ $WAYLAND_DISPLAY ]]'
-
-zpm trbjo/zsh-multimedia if:'type transmission-remote'
-zpm trbjo/zsh-wayland-utils if:'[[ $WAYLAND_DISPLAY ]]'
-zpm trbjo/zsh-file-opener preload:'_ZSH_FILE_OPENER_CMD=u
-    _ZSH_FILE_OPENER_EXCLUDE_SUFFIXES=pdb,exe,srt,part,ytdl,vtt,zwc,dll,otf,ttf,iso,img,mobi,vtt'
-
-zpm trbjo/Neovim-config\
-    if:'type nvim'\
-    where:'${XDG_CONFIG_HOME:-$HOME/.config}/nvim'\
-    postinstall:'nvim +PlugInstall +qall && printf "\e[6 q"'\
-    nosource
-
-zpm trbjo/omnisharp-config\
-    if:'[[ -d /opt/sublime_text ]] && type dotnet'\
-    where:'${HOME}/.omnisharp'\
-    preload:'_dotnet_zsh_complete() { local completions=("$(dotnet complete "${words}")"); reply=( "${(ps:\n:)completions}" ) }; compctl -K _dotnet_zsh_complete dotnet'\
-    nosource
-
-zpm 'https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.38.2/omnisharp-linux-x64.zip'\
-    if:'[[ -d /opt/sublime_text ]] && type dotnet'\
-    where:'${HOME}/.omnisharp-server'\
-    postinstall:'chmod +x "${destination}/bin/mono" "${destination}/omnisharp/OmniSharp.exe"'\
-    nosource
-
-zpm trbjo/userchrome\
-    if:'type firefox'\
-    nosource
-
-zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'$HOME/.tmux/plugins/tpm'\
-    postinstall:'tmux run-shell "${HOME}/.tmux/plugins/tpm/bindings/install_plugins"'
 
 # Dependency of prompt
 zpm romkatv/gitstatus
 zpm trbjo/zsh-prompt-compact preload:"typeset -g __PROMPT_NEWLINE; TRAPWINCH() { zle && prompt_split_lines 2> /dev/null && { zle reset-prompt } }; EXTRA_SSH_ENV='git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh && exec zsh'"
-
-ZPM_LOADED
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - SETOPTS - - - - - - - - -
@@ -100,7 +66,7 @@ setopt no_complete_aliases
 setopt auto_resume              # Attempt To Resume Existing Job Before Creating A New Process.
 setopt no_beep                  # Don't beep
 setopt no_bg_nice               # Don't frob with nicelevels
-setopt no_flow_control                              # Disable ^S, ^Q, ^\ for zsh
+setopt no_flow_control          # Disable ^S, ^Q, ^\ for zsh
 
 setopt appendhistory notify
 unsetopt beep nomatch
@@ -126,46 +92,9 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTORY_IGNORE='([bf]g *|[bf]g|disown|cd ..|cd -)' # Don't add these to the history file.
 
-# activate direnv if it can be found
-if type zsh-defer > /dev/null 2>&1; then
-    type direnv > /dev/null 2>&1 && zsh-defer eval "$(direnv hook zsh)"
-    type pyenv > /dev/null 2>&1 && zsh-defer eval "$(pyenv init -)"
-else
-    type direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
-    type pyenv > /dev/null 2>&1 && eval "$(pyenv init -)"
-fi
-
-
-# - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - ALIASES - - - - - - - - -
-# - - - - - - - - - - - - - - - - - - - -
-
-alias ports='doas /usr/bin/ss -tunlp'
-
-if type pacman > /dev/null 2>&1; then
-    if [[ $PopUp ]] && type subl > /dev/null 2>&1; then
-        TRAPUSR2() {zle clear-screen ; subl=true fzf-clipman }
-    else
-        TRAPUSR2() { }
-    fi
-    # rehash path after pacman installation
-    TRAPUSR1() { rehash; compinit -i }
-fi
-
-alias fdd='fd --no-ignore-vcs --hidden'
-alias vpn_start='doas /usr/bin/systemctl start openvpn.service'
-alias vpn_stop='doas /usr/bin/systemctl stop openvpn.service'
-alias vpn_restart='doas /usr/bin/systemctl restart openvpn.service'
-alias fix_whitespace="git ls-tree -r master --name-only | xargs sed -i 's/[ \t]*$//'"
-alias g=git
-alias LG='doas /usr/bin/LG_ultrafine_brightness'
-alias nmctl='doas /usr/bin/networkctl'
-alias up='doas /usr/bin/networkctl up'
-alias down='doas /usr/bin/networkctl down'
-alias su='chmod o+rw $(tty); su -l'
-alias restart_wifi='doas /usr/bin/systemctl restart iwd.service'
-
 # after this config, the user can use his own aliases in the file ~/.zshrc.local.zsh
 if [[ -e "$HOME/.zshrc.local.zsh" ]]; then
     source "$HOME/.zshrc.local.zsh"
 fi
+
+ZPM_LOADED

@@ -1,5 +1,5 @@
 # set up the fake prompt while we wait for the plugins to initialize
-[[ -o INTERACTIVE && -t 2 ]] && () {
+[[ -o INTERACTIVE && -t 2 ]] && {
     PROMPT_EOL_MARK=
     # typeset -g ZPM_NOASYNC
     # typeset -g ZPM_DEBUG
@@ -9,6 +9,7 @@
 
     PROMPT_STR=$'${ZPM_DEBUG-\e8}'
     PROMPT_STR+='${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }'
+    [[ $PROMPT_PWD ]] && PROMPT_STR+=$PROMPT_PWD ||\
     PROMPT_STR+=%F{6}${${PWD/#$HOME/\~}//\//%F{fg_default_code}\/%F{6}}%F{fg_default_code}
     PROMPT_STR+='$PROMPT_READ_ONLY_DIR'
     PROMPT_STR+='${GITSTATUS:+%B%F{4}${GITSTATUS[7,${#GITSTATUS}]}'
@@ -77,4 +78,11 @@ type rustup > /dev/null 2>&1 && () {
     type vim > /dev/null 2>&1 && export EDITOR=vim && return
     type emacs > /dev/null 2>&1 && export EDITOR='emacs -nw' && return
     type nano > /dev/null 2>&1 && export EDITOR=nano && return
+}
+
+[[ -z $VISUAL ]] && () {
+    type nvim > /dev/null 2>&1 && export VISUAL=nvim && return
+    type vim > /dev/null 2>&1 && export VISUAL=vim && return
+    type emacs > /dev/null 2>&1 && export VISUAL='emacs -nw' && return
+    type nano > /dev/null 2>&1 && export VISUAL=nano && return
 }
