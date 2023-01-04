@@ -289,30 +289,32 @@ ZPM_LOADED() {
     print -n '\e[?25h'
     unfunction ZPM_LOADED
     zpm() {
-        if [[ ! "$1" =~ '^(force|pull|reset|show)$' ]]; then
+        if [[ ! "$1" =~ '^(force|pull|reset|show|dirty)$' ]]; then
             print -l "Plugins must be put in $(_colorizer_abs_path ${ZDOTDIR:-$HOME}/.zshrc) to be loaded."\
             "Interactive usage: zpm <command> [<plugins>]\n"\
             "Commands:"\
             "  force  --  Hard reset repo and git pull"\
             "  pull   --  Do a git pull"\
             "  reset  --  Delete the repo and start anew"\
+            "  dirty  --  Show dirty repositories status"\
             "  show   --  List plugins"
             return 1
         fi
-        local _zpm plg $1
+        local _zpm plg "_$1"
         shift
         for plg in "${@:-${_zplgs[@]}}"; do
             [[ ${@} ]] && _zpm="${_zplgs[(r)*/$plg]}" || _zpm="$plg"
             [[ -z "$_zpm" ]] && _ppn "" $plg 0 " is not an installed plugin" && continue || plg="$_zpm"
-            (( ${+show} )) && _ppn "" "$plg" 26 "➔  $(_colorizer_abs_path $plg)" && continue
-            (( ${+reset} )) && { [[ "$plg" != "$ZPM" ]] && rm -rf $plg; continue }
+            (( ${+_show} )) && _ppn "" "$plg" 26 "➔  $(_colorizer_abs_path $plg)" && continue
+            (( ${+_dirty} )) && { [[ -d "${plg}/.git" ]] && local _gs="$(git -c color.ui=always -C ${plg} status --short 2> $_zpm_out)" && (( ${#_gs} > 1 )) && _ppn "" "$plg" && print $_gs; continue }
+            (( ${+_reset} )) && { [[ "$plg" != "$ZPM" ]] && rm -rf $plg; continue }
             [[ ! -d "${plg}/.git" ]] && _ppn "\e[38;5;242mSkipping " "$plg" 27 "\e[38;5;242mNot a git repository.\e[0m" && continue
-            (( ${+force} )) && git -C "$plg" reset --hard HEAD > $_zpm_out 2>&1
+            (( ${+_force} )) && git -C "$plg" reset --hard HEAD > $_zpm_out 2>&1
             _pp "Updating " "$plg" 25 "… "
             git -C ${plg} pull 2> $_zpm_out ||\
             print "\e[31mFailed to update\e[0m"
         done
-        (( ${+show} )) || exec $(which zsh)
+        (( ${+_show} )) || (( ${+_dirty} )) || exec zsh
     }
 }
 
@@ -323,7 +325,7 @@ _eval_expr() {
 }
 
 (( ${+ZPM_DEBUG} )) && {
-    _zpm_out=/dev/stdout
+    _zpm_out=/dev/tty
     typeset -a _zplgs_remote
     zmodload zsh/datetime
     zpm() {

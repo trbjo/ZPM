@@ -1,32 +1,24 @@
-# typeset -g ZPM_NOASYNC
-# typeset -g ZPM_DEBUG
-((  ${+ZPM_DEBUG} ||  ${+ZPM_NOASYNC} )) && print -n '\e[?25l\e8'
-(( ${+ZPM_DEBUG} )) && PROMPT= || () {
-    if (( ${+OLDPROMPT} )); then
-        PROMPT=$'$OLDPROMPT\e[?25h'
-    else
-        PROMPT=$'\e8\e[36m${${PWD/#$HOME/\~}//\\//\e[39m\/\e[36m}\e[39m\n\e[39m${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }\e[35m❯\e[0m '
-    fi
-}
+# source plugin manager
+source "${${${(%):-%N}:A}%/*}/zpm.zsh"
+PROMPT=${PROMPT_STR}
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - PLUGINS - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
 
-source "${${${(%):-%N}:A}%/*}/zpm.zsh"
-
 # sets up zsh completion system, some keybindings, and some useful aliases
 zpm trbjo/zsh-sensible-defaults
 
 # Sets up the z command in a fast lua implementation
-zpm skywind3000/z.lua if:'type lua' preload:'_ZL_CMD=h'\
+zpm skywind3000/z.lua if:'type lua'\
+    preload:'_ZL_CMD=h'\
     postload:'_zlua_precmd() {czmod --add "${PWD:a}" &! }'&&\
 zpm 'https://raw.githubusercontent.com/trbjo/czmod-compiled/master/czmod'\
     where:'$HOME/.local/bin/czmod'\
     nosource
 
-zpm zdharma-continuum/fast-syntax-highlighting
-zpm zsh-users/zsh-autosuggestions postload:'ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=6,underline'
+zpm zsh-users/zsh-syntax-highlighting
+zpm zsh-users/zsh-autosuggestions postload:'ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=cyan,underline'
 
 # Adds functionality to buffer. Autopairing of quotes, etc.
 zpm trbjo/zsh-goodies preload:'KEYTIMEOUT=1; setopt AUTO_PUSHD'
@@ -52,9 +44,7 @@ zpm trbjo/zsh-fzf-functions
 
 # Dependency of prompt
 zpm romkatv/gitstatus
-zpm trbjo/zsh-prompt-compact preload:"EXTRA_SSH_ENV='git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh && exec zsh'"
-
-ZPM_LOADED
+zpm trbjo/zsh-prompt-compact preload:"typeset -g __PROMPT_NEWLINE; TRAPWINCH() { zle && prompt_split_lines 2> /dev/null && { zle reset-prompt } }; EXTRA_SSH_ENV='git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh && exec zsh'"
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - SETOPTS - - - - - - - - -
@@ -62,7 +52,6 @@ ZPM_LOADED
 
 WORDCHARS=${WORDCHARS//[\/\.&=]}
 
-setopt no_case_glob             # Make globbing case insensitive.
 setopt extendedglob             # Use Extended Globbing.
 setopt autocd                   # Automatically Change Directory If A Directory Is Entered.
 LISTMAX=999                     # Disable 'do you wish to see all %d possibilities'
@@ -79,7 +68,7 @@ setopt no_complete_aliases
 setopt auto_resume              # Attempt To Resume Existing Job Before Creating A New Process.
 setopt no_beep                  # Don't beep
 setopt no_bg_nice               # Don't frob with nicelevels
-setopt no_flow_control                              # Disable ^S, ^Q, ^\ for zsh
+setopt no_flow_control          # Disable ^S, ^Q, ^\ for zsh
 
 setopt appendhistory notify
 unsetopt beep nomatch
@@ -87,14 +76,16 @@ setopt histignorespace
 
 setopt hist_reduce_blanks       # remove unnecessary blanks
 setopt bang_hist                # Treat The '!' Character Specially During Expansion.
-setopt inc_append_history       # Write To The History File Immediately, Not When The Shell Exits.
 setopt share_history            # Share History Between All Sessions.
 setopt hist_expire_dups_first   # Expire A Duplicate Event First When Trimming History.
 setopt hist_ignore_dups         # Do Not Record An Event That Was Just Recorded Again.
 setopt hist_ignore_all_dups     # Delete An Old Recorded Event If A New Event Is A Duplicate.
 setopt hist_find_no_dups        # Do Not Display A Previously Found Event.
 setopt extended_history         # Show Timestamp In History.
+setopt inc_append_history       # Write To The History File Immediately, Not When The Shell Exits.
+setopt inc_append_history_time  # append command to history file immediately after execution
 
+setopt interactive_comments     # allow comments in commands. Useful for postfixing a comment to a command
 setopt prompt_subst             # allow prompt substitution
 
 # History.
@@ -103,10 +94,9 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTORY_IGNORE='([bf]g *|[bf]g|disown|cd ..|cd -)' # Don't add these to the history file.
 
-# - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - ALIASES - - - - - - - - -
-# - - - - - - - - - - - - - - - - - - - -
+# after this config, the user can use his own aliases in the file ~/.zshrc.local.zsh
+if [[ -e "$HOME/.zshrc.local.zsh" ]]; then
+    source "$HOME/.zshrc.local.zsh"
+fi
 
-alias fdd='fd --no-ignore-vcs --hidden'
-alias fix_whitespace="git ls-tree -r master --name-only | xargs sed -i 's/[ \t]*$//'"
-alias g=git
+ZPM_LOADED
