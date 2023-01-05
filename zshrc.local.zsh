@@ -9,7 +9,6 @@ fi
 
 # custom plugins
 
-
 zpm trbjo/zsh-multimedia if:'type transmission-remote'
 zpm trbjo/zsh-wayland-utils if:'[[ $WAYLAND_DISPLAY ]]'
 
@@ -75,4 +74,3 @@ alias up='doas /usr/bin/networkctl up'
 alias down='doas /usr/bin/networkctl down'
 alias su='chmod o+rw $(tty); su -l'
 alias restart_wifi='doas /usr/bin/systemctl restart iwd.service'
-
