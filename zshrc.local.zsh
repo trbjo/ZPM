@@ -7,7 +7,10 @@ else
     type pyenv > /dev/null 2>&1 && eval "$(pyenv init -)"
 fi
 
-# custom plugins
+
+# - - - - - - - - - - - - - - - - - - - -
+# - - - - - - CUSTOM PLUGINS- - - - - - -
+# - - - - - - - - - - - - - - - - - - - -
 
 zpm trbjo/zsh-multimedia if:'type transmission-remote'
 zpm trbjo/zsh-wayland-utils if:'[[ $WAYLAND_DISPLAY ]]'
@@ -44,10 +47,8 @@ zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'$HOME/.tm
     postinstall:'tmux run-shell "${HOME}/.tmux/plugins/tpm/bindings/install_plugins"'
 
 
-
-
 # - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - ALIASES - - - - - - - - -
+# - - - - - - - - ALIASES - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
 
 alias ports='doas /usr/bin/ss -tunlp'
