@@ -1,11 +1,6 @@
-# activate direnv if it can be found
-if type zsh-defer > /dev/null 2>&1; then
-    type direnv > /dev/null 2>&1 && zsh-defer eval "$(direnv hook zsh)"
-    type pyenv > /dev/null 2>&1 && zsh-defer eval "$(pyenv init -)"
-else
-    type direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
-    type pyenv > /dev/null 2>&1 && eval "$(pyenv init -)"
-fi
+type zsh-defer > /dev/null 2>&1 && local async=("zsh-defer")
+type direnv > /dev/null 2>&1 && $async eval "$(direnv hook zsh)"
+type pyenv > /dev/null 2>&1 && $async eval "$(pyenv init -)"
 
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=cyan,underline' # custom style for autosuggestions
 
