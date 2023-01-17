@@ -52,8 +52,6 @@ zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'$HOME/.tm
 # - - - - - - - - ALIASES - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
 
-alias ports='doas /usr/bin/ss -tunlp'
-
 if type pacman > /dev/null 2>&1; then
     if [[ $PopUp ]] && type subl > /dev/null 2>&1; then
         TRAPUSR2() {zle clear-screen ; subl=true fzf-clipman }
@@ -64,15 +62,16 @@ if type pacman > /dev/null 2>&1; then
     TRAPUSR1() { rehash; compinit -i }
 fi
 
+alias down='doas /usr/bin/networkctl down'
 alias fdd='fd --no-ignore-vcs --hidden'
-alias vpn_start='doas /usr/bin/systemctl start openvpn.service'
-alias vpn_stop='doas /usr/bin/systemctl stop openvpn.service'
-alias vpn_restart='doas /usr/bin/systemctl restart openvpn.service'
 alias fix_whitespace="git ls-tree -r master --name-only | xargs sed -i 's/[ \t]*$//'"
 alias g=git
 alias LG='doas /usr/bin/LG_ultrafine_brightness'
 alias nmctl='doas /usr/bin/networkctl'
-alias up='doas /usr/bin/networkctl up'
-alias down='doas /usr/bin/networkctl down'
+alias ports='doas /usr/bin/ss -tunlp'
 alias su='chmod o+rw $(tty); su -l'
+alias up='doas /usr/bin/networkctl up'
+alias vpn_restart='doas /usr/bin/systemctl restart openvpn.service'
+alias vpn_start='doas /usr/bin/systemctl start openvpn.service'
+alias vpn_stop='doas /usr/bin/systemctl stop openvpn.service'
 alias restart_wifi='doas /usr/bin/systemctl restart iwd.service'
