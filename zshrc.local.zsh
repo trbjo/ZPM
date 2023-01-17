@@ -7,6 +7,7 @@ else
     type pyenv > /dev/null 2>&1 && eval "$(pyenv init -)"
 fi
 
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=cyan,underline' # custom style for autosuggestions
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - CUSTOM PLUGINS- - - - - - -
