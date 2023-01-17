@@ -3,7 +3,7 @@ source "${${${(%):-%N}:A}%/*}/zpm.zsh"
 PROMPT=${PROMPT_STR}
 
 # - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - PLUGINS - - - - - - - - -
+# - - - - - - - - PLUGINS - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
 
 # sets up zsh completion system, some keybindings, and some useful aliases
@@ -18,7 +18,7 @@ zpm 'https://raw.githubusercontent.com/trbjo/czmod-compiled/master/czmod'\
     nosource
 
 zpm zsh-users/zsh-syntax-highlighting
-zpm zsh-users/zsh-autosuggestions postload:'ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=fg=cyan,underline'
+zpm zsh-users/zsh-autosuggestions
 
 # Adds functionality to buffer. Autopairing of quotes, etc.
 zpm trbjo/zsh-goodies preload:'KEYTIMEOUT=1; setopt AUTO_PUSHD'
@@ -47,7 +47,7 @@ zpm romkatv/gitstatus
 zpm trbjo/zsh-prompt-compact preload:"typeset -g __PROMPT_NEWLINE; TRAPWINCH() { zle && prompt_split_lines 2> /dev/null && { zle reset-prompt } }; EXTRA_SSH_ENV='git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh && exec zsh'"
 
 # - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - SETOPTS - - - - - - - - -
+# - - - - - - - - SETOPTS - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
 
 WORDCHARS=${WORDCHARS//[\/\.&=]}
@@ -95,8 +95,8 @@ SAVEHIST=10000
 HISTORY_IGNORE='([bf]g *|[bf]g|disown|cd ..|cd -)' # Don't add these to the history file.
 
 # after this config, the user can use his own aliases in the file ~/.zshrc.local.zsh
-if [[ -e "$HOME/.zshrc.local.zsh" ]]; then
-    source "$HOME/.zshrc.local.zsh"
+if [[ -e "${ZDOTDIR:-$HOME}/.zshrc.local.zsh" ]]; then
+    source "${ZDOTDIR:-$HOME}/.zshrc.local.zsh"
 fi
 
-ZPM_LOADED
+ZPM_LOADED # initialize zpm interactive mode
