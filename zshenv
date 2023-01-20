@@ -5,7 +5,7 @@
     # typeset -g ZPM_DEBUG
 
     # colors won't render correctly if the shell does not know about terminal capabilities
-    (( ${+SSH_CONNECTION} )) && export TERM='xterm-256color' && _ssh="[${PROMPT_SSH_NAME:0:12}${${PROMPT_SSH_NAME[13,-1]}:+…}] "
+    (( ${+SSH_CONNECTION} )) && export TERM='xterm-256color'
 
     PROMPT_STR=$'${ZPM_DEBUG-\e8}'
     PROMPT_STR+='${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }'
@@ -19,7 +19,7 @@
     (( ${#${(S%%)${(e)PROMPT_STR}//$~zero/}} > COLUMNS / 3 )) && PROMPT_WS_SEP=$'\n'
 
     local termpos
-    print -Pn -- "\e7${(e)PROMPT_STR}\e]2;$_ssh${PWD/$HOME/\~}\a${ZPM_NOASYNC+\e8}\033[6n"
+    print -Pn -- "\e7${(e)PROMPT_STR}\e]2;${PWD/$HOME/\~}\a${ZPM_NOASYNC+\e8}\033[6n"
     # To avoid printing the prompt twice, we check if we are on the last line in the terminal.
     read -t 1 -s -d 'R' termpos
     if (( ${${termpos##*\[}%;*} == LINES )); then
