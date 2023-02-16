@@ -50,7 +50,7 @@ zpm trbjo/zsh-prompt-compact preload:"typeset -g __PROMPT_NEWLINE; TRAPWINCH() {
 # - - - - - - - - SETOPTS - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
 
-WORDCHARS=${WORDCHARS//[\/\.&=]}
+WORDCHARS="${WORDCHARS//[\/\.&=]}|"
 
 setopt extendedglob             # Use Extended Globbing.
 setopt autocd                   # Automatically Change Directory If A Directory Is Entered.
@@ -79,8 +79,8 @@ setopt bang_hist                # Treat The '!' Character Specially During Expan
 setopt share_history            # Share History Between All Sessions.
 setopt hist_expire_dups_first   # Expire A Duplicate Event First When Trimming History.
 setopt hist_ignore_dups         # Do Not Record An Event That Was Just Recorded Again.
-setopt hist_ignore_all_dups     # Delete An Old Recorded Event If A New Event Is A Duplicate.
-setopt hist_find_no_dups        # Do Not Display A Previously Found Event.
+# setopt hist_ignore_all_dups     # Delete An Old Recorded Event If A New Event Is A Duplicate.
+# setopt hist_find_no_dups        # Do Not Display A Previously Found Event.
 setopt extended_history         # Show Timestamp In History.
 setopt inc_append_history       # Write To The History File Immediately, Not When The Shell Exits.
 setopt inc_append_history_time  # append command to history file immediately after execution
