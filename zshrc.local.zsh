@@ -48,11 +48,6 @@ zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'$HOME/.tm
 # - - - - - - - - - - - - - - - - - - - -
 
 if type pacman > /dev/null 2>&1; then
-    if [[ $PopUp ]] && type subl > /dev/null 2>&1; then
-        TRAPUSR2() {zle clear-screen ; subl=true fzf-clipman }
-    else
-        TRAPUSR2() { }
-    fi
     # rehash path after pacman installation
     TRAPUSR1() { rehash; compinit -i }
 fi

@@ -162,7 +162,6 @@ function __extracter() {
     fi
 
     if [[ ${#all_files[@]} -gt 1 ]]; then
-        print 1
         if [[ $rename_output == true ]]; then
             end_file_name="${explicit_extract_location##*/}"
         else
