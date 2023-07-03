@@ -288,10 +288,11 @@ ZPM_LOADED() {
     print -n '\e[?25h'
     unfunction ZPM_LOADED
     zpm() {
-        if [[ ! "$1" =~ '^(force|pull|reset|show|dirty)$' ]]; then
+        if [[ ! "$1" =~ '^(cd|force|pull|reset|show|dirty)$' ]]; then
             print -l "Plugins must be put in $(_colorizer_abs_path ${ZDOTDIR:-$HOME}/.zshrc) to be loaded."\
             "Interactive usage: zpm <command> [<plugins>]\n"\
             "Commands:"\
+            "  cd     --  Go to the directory of the plugin"\
             "  force  --  Hard reset repo and git pull"\
             "  pull   --  Do a git pull"\
             "  reset  --  Delete the repo and start anew"\
@@ -304,6 +305,7 @@ ZPM_LOADED() {
         for plg in "${@:-${_zplgs[@]}}"; do
             [[ ${@} ]] && _zpm="${_zplgs[(r)*/$plg]}" || _zpm="$plg"
             [[ -z "$_zpm" ]] && _ppn "" $plg 0 " is not an installed plugin" && continue || plg="$_zpm"
+            (( ${+_cd} )) && cd $plg && return
             (( ${+_show} )) && _ppn "" "$plg" 26 "➔  $(_colorizer_abs_path $plg)" && continue
             (( ${+_dirty} )) && { [[ -d "${plg}/.git" ]] && local _gs="$(git -c color.ui=always -C ${plg} status --short 2> $_zpm_out)" && (( ${#_gs} > 1 )) && _ppn "" "$plg" && print $_gs; continue }
             (( ${+_reset} )) && { [[ "$plg" != "$ZPM" ]] && rm -rf $plg; continue }
