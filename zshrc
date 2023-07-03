@@ -11,7 +11,8 @@ zpm trbjo/zsh-sensible-defaults
 
 # Sets up the z command in a fast lua implementation
 zpm skywind3000/z.lua if:'type lua'\
-    preload:'_ZL_CMD=h'\
+    preload:'export _ZL_CMD=h;
+    export _ZL_HYPHEN=1'\
     postload:'_zlua_precmd() {czmod --add "${PWD:a}" &! }'&&\
 zpm 'https://raw.githubusercontent.com/trbjo/czmod-compiled/master/czmod'\
     where:'$HOME/.local/bin/czmod'\
@@ -44,7 +45,12 @@ zpm trbjo/zsh-fzf-functions
 
 # Dependency of prompt
 zpm romkatv/gitstatus
-zpm trbjo/zsh-prompt-compact preload:"typeset -g __PROMPT_NEWLINE; TRAPWINCH() { zle && prompt_split_lines 2> /dev/null && { zle reset-prompt } }; EXTRA_SSH_ENV='git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh && exec zsh'"
+zpm trbjo/zsh-prompt-compact\
+    preload:"
+        typeset -g __PROMPT_NEWLINE;
+        truncate_prompt(){};
+        TRAPWINCH() { truncate_prompt && zle && { zle .reset-prompt } };
+        EXTRA_SSH_ENV='git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh && exec zsh'"\
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - SETOPTS - - - - - - - -
