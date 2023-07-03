@@ -305,7 +305,7 @@ ZPM_LOADED() {
         for plg in "${@:-${_zplgs[@]}}"; do
             [[ ${@} ]] && _zpm="${_zplgs[(r)*/$plg]}" || _zpm="$plg"
             [[ -z "$_zpm" ]] && _ppn "" $plg 0 " is not an installed plugin" && continue || plg="$_zpm"
-            (( ${+_cd} )) && cd $plg && return
+            (( ${+_cd} )) && { [[ -d "$plg" ]] && cd $plg || cd ${plg%/*} ; return }
             (( ${+_show} )) && _ppn "" "$plg" 26 "➔  $(_colorizer_abs_path $plg)" && continue
             (( ${+_dirty} )) && { [[ -d "${plg}/.git" ]] && local _gs="$(git -c color.ui=always -C ${plg} status --short 2> $_zpm_out)" && (( ${#_gs} > 1 )) && _ppn "" "$plg" && print $_gs; continue }
             (( ${+_reset} )) && { [[ "$plg" != "$ZPM" ]] && rm -rf $plg; continue }
