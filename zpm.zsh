@@ -302,20 +302,22 @@ ZPM_LOADED() {
         fi
         local _zpm plg "_$1"
         shift
+        typeset -a zpm_short_names=(${@:-${_zplgs[@]/*\//}})
+        local zpm_longest_plugin=$(( 1+ ${#${zpm_short_names[(r)${(l.${#${(O@)zpm_short_names//?/X}[1]}..?.)}]}} ))
         for plg in "${@:-${_zplgs[@]}}"; do
             [[ ${@} ]] && _zpm="${_zplgs[(r)*/$plg]}" || _zpm="$plg"
             [[ -z "$_zpm" ]] && _ppn "" $plg 0 " is not an installed plugin" && continue || plg="$_zpm"
             (( ${+_cd} )) && { [[ -d "$plg" ]] && cd $plg || cd ${plg%/*} ; return }
-            (( ${+_show} )) && _ppn "" "$plg" 26 "➔  $(_colorizer_abs_path $plg)" && continue
+            (( ${+_show} )) && _ppn "" "$plg" $zpm_longest_plugin "➔  $(_colorizer_abs_path $plg)" && continue
             (( ${+_dirty} )) && { [[ -d "${plg}/.git" ]] && local _gs="$(git -c color.ui=always -C ${plg} status --short 2> $_zpm_out)" && (( ${#_gs} > 1 )) && _ppn "" "$plg" && print $_gs; continue }
             (( ${+_reset} )) && { [[ "$plg" != "$ZPM" ]] && rm -rf $plg; continue }
-            [[ ! -d "${plg}/.git" ]] && _ppn "\e[38;5;242mSkipping " "$plg" 27 "\e[38;5;242mNot a git repository.\e[0m" && continue
+            [[ ! -d "${plg}/.git" ]] && _ppn "\e[38;5;242mSkipping " "$plg" $zpm_longest_plugin "\e[38;5;242mNot a git repository.\e[0m" && continue
             (( ${+_force} )) && git -C "$plg" reset --hard HEAD > $_zpm_out 2>&1
-            _pp "Updating " "$plg" 25 "… "
+            _pp "Updating " "$plg" $zpm_longest_plugin "… "
             git -C ${plg} pull 2> $_zpm_out ||\
             print "\e[31mFailed to update\e[0m"
         done
-        (( ${+_show} )) || (( ${+_dirty} )) || exec zsh
+        (( ${+_cd} )) || (( ${+_show} )) || (( ${+_dirty} )) || exec zsh
     }
 }
 
