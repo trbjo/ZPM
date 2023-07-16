@@ -28,14 +28,7 @@ zpm 'https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/docker/_do
         zstyle ":completion:*:*:docker-*:*" option-stacking yes;'\
     nosource
 
-if [[ "$(uname)" == "Linux" ]]; then
-zpm 'https://github.com/junegunn/fzf/releases/download/0.29.0/fzf-0.29.0-linux_amd64.tar.gz'\
-    if:'! type fzf'\
-    where:'$HOME/.local/bin/fzf'\
-    nosource
-fi
-
-zpm trbjo/zsh-fzf-functions
+type fzf > /dev/null 2>&1 && zpm trbjo/zsh-fzf-functions
 
 # Dependency of prompt
 zpm romkatv/gitstatus
