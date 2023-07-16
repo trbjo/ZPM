@@ -9,14 +9,8 @@ PROMPT=${PROMPT_STR}
 # sets up zsh completion system, some keybindings, and some useful aliases
 zpm trbjo/zsh-sensible-defaults
 
-# Sets up the z command in a fast lua implementation
-zpm skywind3000/z.lua if:'type lua'\
-    preload:'export _ZL_CMD=h;
-             export _ZL_HYPHEN=1'\
-    postload:'_zlua_precmd() {czmod --add "${PWD:a}" &! }'&&\
-zpm 'https://raw.githubusercontent.com/trbjo/czmod-compiled/master/czmod'\
-    where:'$HOME/.local/bin/czmod'\
-    nosource
+zpm agkozak/zsh-z postload:'autoload -U compinit && compinit'
+alias h='zshz 2>&1'
 
 zpm zsh-users/zsh-syntax-highlighting
 zpm zsh-users/zsh-autosuggestions
