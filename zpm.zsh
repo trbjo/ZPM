@@ -255,10 +255,12 @@ zpm${ZPM_DEBUG+_debug}() {
         fi
     fi
     (( ! ${+nosource} )) && {
-        local filename="${destination}/${remt_loc##*/}"
+        local filename="${destination}"
+        [[ -f "${filename}" ]] || {
+        filename="${destination}/${remt_loc##*/}" &&\
         { [[ -f "${filename}.zsh" ]] && filename+=".zsh" } ||\
         { [[ -f "${filename}.plugin.zsh" ]] && filename+=".plugin.zsh" } ||\
-        { _ppn "No file to source for " $remt_loc && return 1 }
+        { _ppn "No file to source for " $remt_loc && return 1 } }
         { [[ "${filename}" -nt "${filename}.zwc" ]] ||\
         [[ ! -f "${filename}.zwc" ]] && zcompile "${filename}" } &!
         (( ! ${+ZPM_NOASYNC} )) && (( ! ${+noasync} )) && local async=("zsh-defer" "${${(@s: :)defer}[@]}")
