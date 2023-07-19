@@ -8,9 +8,7 @@ PROMPT=${PROMPT_STR}
 
 # sets up zsh completion system, some keybindings, and some useful aliases
 zpm trbjo/zsh-sensible-defaults
-
-zpm agkozak/zsh-z postload:'autoload -U compinit && compinit'
-alias h='zshz 2>&1'
+zpm agkozak/zsh-z preload:'ZSHZ_CASE=smart; ZSHZ_CMD=h' postload:'autoload -U compinit && compinit'
 
 zpm zsh-users/zsh-syntax-highlighting
 zpm zsh-users/zsh-autosuggestions
