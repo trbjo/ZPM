@@ -52,9 +52,13 @@ alias emil='noglob swaymsg -q -- output * scale 3'
 alias normal='noglob swaymsg -q -- output * scale 2'
 alias curl='curlie'
 
+local become
+[[ $UID == 0 ]] || become='doas'
 alias sysu='systemctl --user'
-alias syss='doas /usr/bin/systemctl'
-alias net='doas /usr/bin/networkctl'
+alias sys="$become /usr/bin/systemctl"
+alias net="$become /usr/bin/networkctl"
+
+
 alias js='journalctl -n 200 --no-pager --follow --output cat --system -u'
 alias ju='journalctl -n 200 --no-pager --follow --output cat --user -u'
 
@@ -131,11 +135,11 @@ else
 fi
 
 if type eza > /dev/null 2>&1; then
-    alias e='exa --group-directories-first'
-    alias esort='exa --sort=oldest --long --git'
-    alias ee='exa --group-directories-first --long --git'
-    alias etree='exa --group-directories-first --long --git --tree'
-    alias ea='exa --group-directories-first --long --git --all'
+    alias e='eza --group-directories-first'
+    alias esort='eza --sort=oldest --long --git'
+    alias ee='eza --group-directories-first --long --git'
+    alias etree='eza --group-directories-first --long --git --tree'
+    alias ea='eza --group-directories-first --long --git --all'
 else
     alias e='ls --color=auto --group-directories-first'
     alias esort='ls --color=auto -lt --human-readable'
