@@ -32,6 +32,7 @@ zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'$HOME/.tm
 
 zpm trbjo/contrib\
     where:'${HOME}/code/resights-contrib/resights-contrib.zsh'\
+    if:'[[ $WAYLAND_DISPLAY ]]'
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - ALIASES - - - - - - - -
