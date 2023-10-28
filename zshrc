@@ -14,7 +14,7 @@ zpm zsh-users/zsh-syntax-highlighting
 zpm zsh-users/zsh-autosuggestions
 
 # Adds functionality to buffer. Autopairing of quotes, etc.
-zpm trbjo/zsh-goodies preload:'KEYTIMEOUT=1; setopt AUTO_PUSHD'
+zpm trbjo/zsh-goodies preload:'KEYTIMEOUT=5; setopt AUTO_PUSHD'
 
 # Docker autocomplete
 zpm 'https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/docker/_docker'\
