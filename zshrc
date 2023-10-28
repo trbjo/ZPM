@@ -26,7 +26,7 @@ zpm 'https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/docker/_do
         zstyle ":completion:*:*:docker-*:*" option-stacking yes;'\
     nosource
 
-type fzf > /dev/null 2>&1 && zpm trbjo/zsh-fzf-functions
+zpm trbjo/zsh-fzf-functions if:'type fzf'
 
 # Dependency of prompt
 zpm romkatv/gitstatus

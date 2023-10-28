@@ -1,3 +1,20 @@
+() {
+    if [[ "$(/usr/bin/gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)"  == "'Adwaita'" ]]; then
+        # light
+        local file="/home/tb/.config/foot/github.colors"
+    else
+        # dark
+        local file="/home/tb/.config/foot/gruvbox.colors"
+    fi
+    cat "${file}.compiled"
+}
+
+TRAPUSR1() {
+    set-term-colors.sh
+    rehash
+    type -f compinit > /dev/null 2>&1 && compinit -i
+}
+
 # set up the fake prompt while we wait for the plugins to initialize
 [[ -o INTERACTIVE && -t 2 ]] && {
     PROMPT_EOL_MARK=

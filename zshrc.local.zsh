@@ -23,18 +23,6 @@ zpm trbjo/Neovim-config\
     postinstall:'nvim +PlugInstall +qall && printf "\e[6 q"'\
     nosource
 
-zpm trbjo/omnisharp-config\
-    if:'[[ -d /opt/sublime_text ]] && type dotnet'\
-    where:'${HOME}/.omnisharp'\
-    preload:'_dotnet_zsh_complete() { local completions=("$(dotnet complete "${words}")"); reply=( "${(ps:\n:)completions}" ) }; compctl -K _dotnet_zsh_complete dotnet'\
-    nosource
-
-zpm 'https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v1.38.2/omnisharp-linux-x64.zip'\
-    if:'[[ -d /opt/sublime_text ]] && type dotnet'\
-    where:'${HOME}/.omnisharp-server'\
-    postinstall:'chmod +x "${destination}/bin/mono" "${destination}/omnisharp/OmniSharp.exe"'\
-    nosource
-
 zpm trbjo/userchrome\
     if:'type firefox'\
     nosource
@@ -42,26 +30,104 @@ zpm trbjo/userchrome\
 zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'$HOME/.tmux/plugins/tpm'\
     postinstall:'tmux run-shell "${HOME}/.tmux/plugins/tpm/bindings/install_plugins"'
 
+zpm trbjo/contrib\
+    where:'${HOME}/code/resights-contrib/resights-contrib.zsh'\
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - ALIASES - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
 
-if type pacman > /dev/null 2>&1; then
-    # rehash path after pacman installation
-    TRAPUSR1() { rehash; compinit -i }
-fi
-
-alias down='doas /usr/bin/networkctl down'
 alias fdd='fd --no-ignore-vcs --hidden'
 alias fix_whitespace="git ls-tree -r master --name-only | xargs sed -i 's/[ \t]*$//'"
-alias g=git
 alias LG='doas /usr/bin/LG_ultrafine_brightness'
-alias nmctl='doas /usr/bin/networkctl'
 alias ports='doas /usr/bin/ss -tunlp'
 alias su='chmod o+rw $(tty); su -l'
-# alias up='doas /usr/bin/networkctl up'
-alias vpn_restart='doas /usr/bin/systemctl restart openvpn.service'
-alias vpn_start='doas /usr/bin/systemctl start openvpn.service'
-alias vpn_stop='doas /usr/bin/systemctl stop openvpn.service'
+
 alias restart_wifi='doas /usr/bin/systemctl restart iwd.service'
+alias trust_wifi='echo -n "|$(grep -oE ([0-9a-f]{2}:){5}[0-9a-f]{2} /proc/net/arp)" >> ~/.config/environment.d/trusted_wifi.conf'
+
+
+alias emil='noglob swaymsg -q -- output * scale 3'
+alias normal='noglob swaymsg -q -- output * scale 2'
+alias curl='curlie'
+
+alias sysu='systemctl --user'
+alias syss='doas /usr/bin/systemctl'
+alias net='doas /usr/bin/networkctl'
+alias js='journalctl -n 200 --no-pager --follow --output cat --system -u'
+alias ju='journalctl -n 200 --no-pager --follow --output cat --user -u'
+
+
+alias Syu='doas pacman -Syu'
+alias U='doas pacman -U'
+alias Sy='doas pacman -Sy'
+alias S='doas pacman -S'
+alias Ss="pacman -Ss"
+alias Rsn='doas pacman -Rsn'
+alias Rns='doas pacman -Rsn'
+alias Rdd='doas pacman -Rdd'
+alias Qs='pacman -Qs'
+# list packages owned by
+alias Qo='pacman -Qo'
+alias Qqs='pacman -Qqs'
+alias Qq='pacman -Qq'
+
+alias Qtdq='doas pacman -Rsn $(pacman -Qtdq)'
+
+# strips the dollar sign when pasting from the internet
+alias \$=''
+
+# allows pasting from the internet
+alias '#'=doas
+
+# Git aliases
+alias glo="git log --pretty=format:'%Cred%h %Cgreen%cr %C(blue)%an%Creset%Creset ●%d%Creset %s' --abbrev-commit"
+alias gs='git status --porcelain --short'
+alias gco='git checkout'
+alias gcp='git cherry-pick'
+alias gb='git branch'
+alias gd='git diff'
+alias ga='git add'
+alias gap='git add -p'
+alias gl='git log'
+alias gcam='git commit -am'
+alias gcm='git commit -m'
+alias gpull='git pull --rebase'
+alias gdn='git diff --name-only'
+alias push='git push'
+alias pushorigin='git push --set-upstream origin $(git branch --show-current)'
+alias pull='git pull --rebase'
+
+# Easy redirect
+alias -g silent="> /dev/null 2>&1"
+alias -g noerr="2> /dev/null"
+alias -g onerr="1> /dev/null"
+alias -g stdboth="2>&1"
+
+if type rg > /dev/null 2>&1; then
+    # grep for ipv4 addresses
+    ipv4addrs() { rg --pcre2 '\b(?<!\.)(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?!\.)\b' }
+
+    alias rgg="noglob rg --no-ignore-vcs --hidden --glob "!.zhistory""
+    alias rg="noglob rg --glob "!.zhistory""
+    alias rgf="noglob rg --fixed-strings --glob "!.zhistory""
+    alias -g G=" |& rg --"
+    alias -g GG=" |& rg"
+    alias -g GF=" |& rg --fixed-strings --"
+    alias -g HL=" |& rg -C 9999999999999999 --"
+else
+    alias -g G=' |& grep --color=auto'
+fi
+
+if type eza > /dev/null 2>&1; then
+    alias e='exa --group-directories-first'
+    alias esort='exa --sort=oldest --long --git'
+    alias ee='exa --group-directories-first --long --git'
+    alias etree='exa --group-directories-first --long --git --tree'
+    alias ea='exa --group-directories-first --long --git --all'
+else
+    alias e='ls --color=auto --group-directories-first'
+    alias esort='ls --color=auto -lt --human-readable'
+    alias ee='ls --color=auto --no-group --group-directories-first -l --human-readable'
+    alias ea='ls --color=auto --group-directories-first --all --human-readable'
+fi
