@@ -59,6 +59,16 @@ alias js='journalctl -n 200 --no-pager --follow --output cat --system -u'
 alias ju='journalctl -n 200 --no-pager --follow --output cat --user -u'
 
 
+alias sablame='systemd-analyze blame'
+alias sacritical='systemd-analyze critical-chain'
+alias satime='systemd-analyze time'
+alias sadump='systemd-analyze dump > systemd-dump.txt'
+alias sasecurity='systemd-analyze security'
+
+alias list-deps='systemctl list-dependencies'
+alias failed-services='systemctl --failed'
+
+
 alias Syu='doas pacman -Syu'
 alias U='doas pacman -U'
 alias Sy='doas pacman -Sy'
