@@ -8,7 +8,7 @@
     (( ${+SSH_CONNECTION} )) && export TERM='xterm-256color'
 
     PROMPT_STR=$'${ZPM_DEBUG-\e8}'
-    PROMPT_STR+='${SSH_CONNECTION:+%B[%b$PROMPT_SSH_NAME%B]%b }'
+    PROMPT_STR+='${SSH_CONNECTION:+%B[%b${PROMPT_SSH_NAME:-$HOST}%B]%b }'
     [[ $PROMPT_PWD ]] && PROMPT_STR+=$PROMPT_PWD ||\
     PROMPT_STR+=%F{6}${${PWD/#$HOME/\~}//\//%F{fg_default_code}\/%F{6}}%F{fg_default_code}
     PROMPT_STR+='$PROMPT_READ_ONLY_DIR'
