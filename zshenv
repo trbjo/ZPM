@@ -73,16 +73,13 @@ type rustup > /dev/null 2>&1 && () {
     path=("$HOME/.rustup/toolchains/${toolchain/\ \(default\)/}/bin" ${path[@]})
 }
 
-[[ -z $EDITOR ]] && () {
-    type nvim > /dev/null 2>&1 && export EDITOR=nvim && return
-    type vim > /dev/null 2>&1 && export EDITOR=vim && return
-    type emacs > /dev/null 2>&1 && export EDITOR='emacs -nw' && return
-    type nano > /dev/null 2>&1 && export EDITOR=nano && return
-}
-
-[[ -z $VISUAL ]] && () {
-    type nvim > /dev/null 2>&1 && export VISUAL=nvim && return
-    type vim > /dev/null 2>&1 && export VISUAL=vim && return
-    type emacs > /dev/null 2>&1 && export VISUAL='emacs -nw' && return
-    type nano > /dev/null 2>&1 && export VISUAL=nano && return
+() {
+    local editor
+    for editor in 'emacs -nw' 'nvim' 'vim' 'nano'; do
+        if type "${editor%% *}" > /dev/null 2>&1; then
+            [[ -z $EDITOR ]] && export EDITOR="$editor"
+            [[ -z $VISUAL ]] && export VISUAL="$editor"
+            return
+        fi
+    done
 }
