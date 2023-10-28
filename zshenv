@@ -22,8 +22,6 @@ TRAPUSR1() {
     # typeset -g ZPM_DEBUG
 
     # colors won't render correctly if the shell does not know about terminal capabilities
-    (( ${+SSH_CONNECTION} )) && export TERM='xterm-256color'
-
     PROMPT_STR=$'${ZPM_DEBUG-\e8}'
     PROMPT_STR+='${SSH_CONNECTION:+%B[%b${PROMPT_SSH_NAME:-$HOST}%B]%b }'
     [[ $PROMPT_PWD ]] && PROMPT_STR+=$PROMPT_PWD ||\
