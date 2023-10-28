@@ -1,16 +1,16 @@
-() {
-    if [[ "$(/usr/bin/gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)"  == "'Adwaita'" ]]; then
-        # light
-        local file="/home/tb/.config/foot/github.colors"
-    else
-        # dark
-        local file="/home/tb/.config/foot/gruvbox.colors"
-    fi
-    cat "${file}.compiled"
+set_term_colors() {
+    local colorscheme
+    [[ "$(/usr/bin/gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)"  == "'Adwaita'" ]] && colorscheme=github || colorscheme=gruvbox
+    cat "/home/tb/.config/foot/${colorscheme}.colors.compiled" >&3
+}
+
+(( ! ${+SSH_CONNECTION} )) && {
+    exec 3> /dev/tty
+    set_term_colors
 }
 
 TRAPUSR1() {
-    (( ${+SSH_CONNECTION} )) || set-term-colors.sh
+    (( ${+SSH_CONNECTION} )) || set_term_colors
     type -f compinit > /dev/null 2>&1 && compinit -i
     rehash
 }
