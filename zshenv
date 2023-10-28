@@ -10,9 +10,9 @@
 }
 
 TRAPUSR1() {
-    set-term-colors.sh
-    rehash
+    (( ${+SSH_CONNECTION} )) || set-term-colors.sh
     type -f compinit > /dev/null 2>&1 && compinit -i
+    rehash
 }
 
 # set up the fake prompt while we wait for the plugins to initialize
