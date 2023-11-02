@@ -1,11 +1,10 @@
 set_term_colors() {
     local colorscheme
     [[ "$(/usr/bin/gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)"  == "'Adwaita'" ]] && colorscheme=github || colorscheme=gruvbox
-    cat "/home/tb/.config/foot/${colorscheme}.colors.compiled" >&3
+    cat "/home/tb/.config/foot/${colorscheme}.colors.compiled"
 }
 
-(( ! ${+SSH_CONNECTION} )) && {
-    exec 3> /dev/tty
+(( ! ${+SSH_CONNECTION} )) && [[ -t 0 ]] && {
     set_term_colors
 }
 
