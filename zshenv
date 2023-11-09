@@ -4,9 +4,7 @@ set_term_colors() {
     cat "/home/tb/.config/foot/${colorscheme}.colors.compiled"
 }
 
-(( ! ${+SSH_CONNECTION} )) && [[ -t 0 ]] && {
-    set_term_colors
-}
+(( ! ${+SSH_CONNECTION} )) && [[ -t 2 ]] && [[ $- == *i* ]] && set_term_colors
 
 TRAPUSR1() {
     (( ${+SSH_CONNECTION} )) || set_term_colors

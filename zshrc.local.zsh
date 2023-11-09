@@ -96,7 +96,7 @@ alias \$=''
 alias '#'=doas
 
 # Git aliases
-alias glo="git log --pretty=format:'%Cred%h %Cgreen%cr %C(blue)%an%Creset%Creset ●%d%Creset %s' --abbrev-commit"
+alias glo="git log --date=format:'%a %d %b %H.%M' --pretty=format:'%Cred%h %Cgreen%cd %C(blue)%an%Creset%Creset ●%d%Creset %s' --abbrev-commit"
 alias gs='git status --porcelain --short'
 alias gco='git checkout'
 alias gcp='git cherry-pick'
