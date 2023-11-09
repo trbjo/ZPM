@@ -56,6 +56,8 @@ local become
 [[ $UID == 0 ]] || become='doas'
 alias sysu='systemctl --user'
 alias sys="$become /usr/bin/systemctl"
+alias mount="$become /usr/bin/mount"
+alias umount="$become /usr/bin/umount"
 alias net="$become /usr/bin/networkctl"
 
 
@@ -146,3 +148,10 @@ else
     alias ee='ls --color=auto --no-group --group-directories-first -l --human-readable'
     alias ea='ls --color=auto --group-directories-first --all --human-readable'
 fi
+
+countsource() {
+    for extension in $(fd . -t f | rg -o '\.[a-zA-Z]+$' | sort | uniq | cut -c 2-); do
+        printf "%-8s\t%s" "$extension"
+        fd -t f -e $extension -0 | xargs -0 wc -l --total=only
+    done | sort
+}
