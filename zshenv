@@ -1,6 +1,6 @@
 set_term_colors() {
     local colorscheme
-    [[ "$(/usr/bin/gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)"  == "'Adwaita'" ]] && colorscheme=github || colorscheme=gruvbox
+    [[ "$(/usr/bin/gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)"  == "'Adwaita'" ]] && colorscheme=github || colorscheme=citylights
     cat "/home/tb/.config/foot/${colorscheme}.colors.compiled"
 }
 
@@ -10,6 +10,10 @@ TRAPUSR1() {
     (( ${+SSH_CONNECTION} )) || set_term_colors
     type -f compinit > /dev/null 2>&1 && compinit -i
     rehash
+}
+
+TRAPTERM() {
+    exit 0
 }
 
 # set up the fake prompt while we wait for the plugins to initialize
@@ -24,7 +28,7 @@ TRAPUSR1() {
     [[ $PROMPT_PWD ]] && PROMPT_STR+=$PROMPT_PWD ||\
     PROMPT_STR+=%F{6}${${PWD/#$HOME/\~}//\//%F{fg_default_code}\/%F{6}}%F{fg_default_code}
     PROMPT_STR+='$PROMPT_READ_ONLY_DIR'
-    PROMPT_STR+='${GITSTATUS:+%B%F{4}${GITSTATUS[7,${#GITSTATUS}]}'
+    PROMPT_STR+='${GITSTATUS}'
     PROMPT_STR+='${PROMPT_WS_SEP:- }'
     PROMPT_STR+='%F{5}❯%f '
     typeset zero='%([BSUbfksu]|([FK]|){*})'
@@ -95,3 +99,4 @@ type rustup > /dev/null 2>&1 && () {
         fi
     done
 }
+

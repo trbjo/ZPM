@@ -31,8 +31,8 @@ zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'$HOME/.tm
     postinstall:'tmux run-shell "${HOME}/.tmux/plugins/tpm/bindings/install_plugins"'
 
 zpm trbjo/contrib\
-    where:'${HOME}/code/resights-contrib/resights-contrib.zsh'\
-    if:'[[ $WAYLAND_DISPLAY ]]'
+   where:'${HOME}/code/resights-contrib/resights-contrib.zsh'\
+   if:'[[ $WAYLAND_DISPLAY ]]'
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - ALIASES - - - - - - - -
@@ -54,16 +54,16 @@ alias curl='curlie'
 
 local become
 [[ $UID == 0 ]] || become='doas'
-alias sysu='systemctl --user'
 alias sys="$become /usr/bin/systemctl"
 alias mount="$become /usr/bin/mount"
-alias umount="$become /usr/bin/umount"
 alias net="$become /usr/bin/networkctl"
 
+remove() { $become /usr/bin/umount $1 && $become /usr/bin/sync && print "usb is safe to remove"  || return 2 }
 
-alias js='journalctl -n 200 --no-pager --follow --output cat --system -u'
-alias ju='journalctl -n 200 --no-pager --follow --output cat --user -u'
-
+alias js='journalctl -n 200 --no-pager --follow --output cat --unit'
+alias ju='journalctl -n 200 --no-pager --follow --output cat --user-unit'
+alias wwifi='wifi systemctl --user restart networkonline.service'
+alias bootlogs='journalctl -b --output cat --follow --since="$(uptime_iso.sh)"'
 
 alias sablame='systemd-analyze blame'
 alias sacritical='systemd-analyze critical-chain'
@@ -128,7 +128,7 @@ if type rg > /dev/null 2>&1; then
     alias rgg="noglob rg --no-ignore-vcs --hidden --glob "!.zhistory""
     alias rg="noglob rg --glob "!.zhistory""
     alias rgf="noglob rg --fixed-strings --glob "!.zhistory""
-    alias -g G=" |& rg --"
+    alias -g G=" |& rg "
     alias -g GG=" |& rg"
     alias -g GF=" |& rg --fixed-strings --"
     alias -g HL=" |& rg -C 9999999999999999 --"
@@ -154,4 +154,13 @@ countsource() {
         printf "%-8s\t%s" "$extension"
         fd -t f -e $extension -0 | xargs -0 wc -l --total=only
     done | sort
+}
+# ffmpeg -i The.Julekalender.Afsnit.1-12.DiVX.DVDRip-RDK.avi -strict -2 OUTPUT.mp4
+
+prepare_chromecast_audio() {
+    local source="$1"
+    local basename="${source%.*}"
+    local target="${basename}.mp4"
+    print "converting $source -> $target for sound"
+    ffmpeg -i "$source" -map 0:v:0 -c:v copy -map 0:a:0 -map 0:a:0 -c:a:0 aac -ac:a:0 2 -b:a:0 192k -c:a:1 copy "$target"
 }
