@@ -30,10 +30,6 @@ zpm trbjo/userchrome\
 zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'$HOME/.tmux/plugins/tpm'\
     postinstall:'tmux run-shell "${HOME}/.tmux/plugins/tpm/bindings/install_plugins"'
 
-zpm trbjo/contrib\
-   where:'${HOME}/code/resights-contrib/resights-contrib.zsh'\
-   if:'[[ $WAYLAND_DISPLAY ]]'
-
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - ALIASES - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
