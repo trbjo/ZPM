@@ -46,6 +46,7 @@ alias trust_wifi='echo -n "|$(grep -oE ([0-9a-f]{2}:){5}[0-9a-f]{2} /proc/net/ar
 
 alias emil='noglob swaymsg -q -- output * scale 3'
 alias normal='noglob swaymsg -q -- output * scale 2'
+alias msg='/usr/bin/swaymsg -q -t send_tick'
 alias curl='curlie'
 
 local become
@@ -59,7 +60,7 @@ remove() { $become /usr/bin/umount $1 && $become /usr/bin/sync && print "usb is 
 alias js='journalctl -n 200 --no-pager --follow --output cat --unit'
 alias ju='journalctl -n 200 --no-pager --follow --output cat --user-unit'
 alias wwifi='wifi systemctl --user restart networkonline.service'
-alias bootlogs='journalctl -b --output cat --follow --since="$(uptime_iso.sh)"'
+alias bootlogs='journalctl --output cat --follow --since="$(uptime_iso.sh)" -b'
 
 alias sablame='systemd-analyze blame'
 alias sacritical='systemd-analyze critical-chain'

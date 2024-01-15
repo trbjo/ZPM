@@ -1,18 +1,15 @@
-set_term_colors() {
-    local colorscheme
-    [[ "$(/usr/bin/gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)"  == "'Adwaita'" ]] && colorscheme=github || colorscheme=citylights
-    cat "/home/tb/.config/foot/${colorscheme}.colors.compiled"
-}
-
-(( ! ${+SSH_CONNECTION} )) && [[ -t 2 ]] && [[ $- == *i* ]] && set_term_colors
+if (( ! ${+SSH_CONNECTION} )) && [[ -t 2 ]] && [[ $- == *i* ]] && [[ -f /usr/local/bin/goswitcher ]]; then
+    /usr/local/bin/goswitcher &!
+    goswitcher_pid=$!
+fi
 
 TRAPUSR1() {
-    (( ${+SSH_CONNECTION} )) || set_term_colors
     type -f compinit > /dev/null 2>&1 && compinit -i
     rehash
 }
 
 TRAPTERM() {
+    kill -TERM ${goswitcher_pid:-0}
     exit 0
 }
 
