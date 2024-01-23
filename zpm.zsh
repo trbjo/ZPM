@@ -18,6 +18,66 @@ function _enum_exit_code() {
     esac
 }
 
+pprint() {
+    template=$1
+    shift
+
+    local text
+    local styles
+
+    for arg_pair in "$@"; do
+        text="${arg_pair% *}"
+        styles="${arg_pair##* }"
+        style_parts=(${(s/,/)styles})
+
+        if [[ $text == $THIS_DIR* ]]; then
+            text="${text#$THIS_DIR\/}"
+        elif [[ $text == $HOME* ]]; then
+            text="~${text#$HOME}"
+        fi
+
+        style=""
+        for part in "${style_parts[@]}"; do
+            case $part in
+                ("red") style+="\e[31m";;
+                ("green") style+="\e[32m";;
+                ("yellow") style+="\e[33m";;
+                ("blue") style+="\e[34m";;
+                ("magenta") style+="\e[35m";;
+                ("cyan") style+="\e[36m";;
+
+                ("bold") style+="\e[1m";;
+                ("italic") style+="\e[3m";;
+
+
+                (bg:[0-9]*)
+                bg_color=${part#bg:}
+                style+="\e[48;5;${bg_color}m";;
+                (fg:[0-9]*)
+                fg_color=${part#fg:}
+                style+="\e[38;5;${fg_color}m";;
+
+                (*) style+="\e[37m";; # default to white
+            esac
+        done
+
+        template=${template/"%s"/"${style}${text}\e[0m"}
+    done
+
+print -n "\e[37m${template}\e[0m"
+}
+
+pprintn() {
+    pprint $@
+    print
+}
+
+pprint_header() {
+    local char='='
+    pprintn "%s" "${(l:$COLUMNS::=:)char} magenta,bold"
+}
+
+
 function __extracter_wrapper() {
     local arc="$1"
     local destination explicit_extract_location
@@ -259,6 +319,7 @@ zpm${ZPM_DEBUG+_debug}() {
         [[ -f "${filename}" ]] || {
         filename="${destination}/${remt_loc##*/}" &&\
         { [[ -f "${filename}.zsh" ]] && filename+=".zsh" } ||\
+        { [[ -f "${filename}.sh" ]] && filename+=".sh" } ||\
         { [[ -f "${filename}.plugin.zsh" ]] && filename+=".plugin.zsh" } ||\
         { _ppn "No file to source for " $remt_loc && return 1 } }
         { [[ "${filename}" -nt "${filename}.zwc" ]] ||\

@@ -1,16 +1,6 @@
-if (( ! ${+SSH_CONNECTION} )) && [[ -t 2 ]] && [[ $- == *i* ]] && [[ -f /usr/local/bin/goswitcher ]]; then
-    /usr/local/bin/goswitcher &!
-    goswitcher_pid=$!
-fi
-
 TRAPUSR1() {
     type -f compinit > /dev/null 2>&1 && compinit -i
     rehash
-}
-
-TRAPTERM() {
-    kill -TERM ${goswitcher_pid:-0}
-    exit 0
 }
 
 # set up the fake prompt while we wait for the plugins to initialize

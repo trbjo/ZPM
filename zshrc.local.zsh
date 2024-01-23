@@ -11,7 +11,7 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=cyan,underline' # custom style for au
 zpm trbjo/zsh-multimedia if:'type transmission-remote'
 zpm trbjo/zsh-wayland-utils if:'[[ $WAYLAND_DISPLAY ]]'
 
-zpm trbjo/SublimeZshIntegration\
+zpm trbjo/SublimeZshIntegration \
     where:'${XDG_CONFIG_HOME:-$HOME/.config}/sublime-text/Packages/SublimeZshIntegration'\
     if:'[[ -d /opt/sublime_text/ ]] && [[ $WAYLAND_DISPLAY ]]'
 
@@ -52,6 +52,7 @@ alias curl='curlie'
 local become
 [[ $UID == 0 ]] || become='doas'
 alias sys="$become /usr/bin/systemctl"
+alias sysu="/usr/bin/systemctl --user"
 alias mount="$become /usr/bin/mount"
 alias net="$become /usr/bin/networkctl"
 
@@ -72,21 +73,24 @@ alias list-deps='systemctl list-dependencies'
 alias failed-services='systemctl --failed'
 
 
-alias Syu='doas pacman -Syu'
-alias U='doas pacman -U'
-alias Sy='doas pacman -Sy'
-alias S='doas pacman -S'
-alias Ss="pacman -Ss"
-alias Rsn='doas pacman -Rsn'
-alias Rns='doas pacman -Rsn'
-alias Rdd='doas pacman -Rdd'
-alias Qs='pacman -Qs'
-# list packages owned by
-alias Qo='pacman -Qo'
-alias Qqs='pacman -Qqs'
-alias Qq='pacman -Qq'
+() {
+    local pacman=/usr/bin/pacman
+    alias Syu="doas $pacman -Syu"
+    alias U="doas $pacman -U"
+    alias Sy="doas $pacman -Sy"
+    alias S="doas $pacman -S"
+    alias Ss="$pacman -Ss"
+    alias Rsn="doas $pacman -Rsn"
+    alias Rns="doas $pacman -Rsn"
+    alias Rdd="doas $pacman -Rdd"
+    alias Qs='$pacman -Qs'
+    # list packages owned by
+    alias Qo='$pacman -Qo'
+    alias Qqs='$pacman -Qqs'
+    alias Qq='$pacman -Qq'
+    alias Qtdq="doas pacman -Rsn $(pacman -Qtdq)"
+}
 
-alias Qtdq='doas pacman -Rsn $(pacman -Qtdq)'
 
 # strips the dollar sign when pasting from the internet
 alias \$=''
@@ -112,6 +116,20 @@ alias push='git push'
 alias pushorigin='git push --set-upstream origin $(git branch --show-current)'
 alias pull='git pull --rebase'
 
+# alias dirty='git -c color.status=always status --short | fzf --delimiter=" " --preview "git diff HEAD {-1} | delta --width=\$(( \$FZF_PREVIEW_COLUMNS - 1 ))" --preview-window=bottom,80% | cut -c4- | u'
+
+function dirty() {
+    git -c color.status=always status --short | fzf \
+        --delimiter=" " \
+        --preview 'if [[ {} == "?"* ]]; then
+                          git diff --no-index /dev/null {-1} | delta --width=$(( $FZF_PREVIEW_COLUMNS - 1));
+                      else
+                          git diff HEAD -- {-1} | delta --width=$(( $FZF_PREVIEW_COLUMNS - 1));
+                      fi;' \
+        --preview-window=bottom,80%
+
+}
+
 # Easy redirect
 alias -g silent="> /dev/null 2>&1"
 alias -g noerr="2> /dev/null"
@@ -123,6 +141,7 @@ if type rg > /dev/null 2>&1; then
     ipv4addrs() { rg --pcre2 '\b(?<!\.)(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?!\.)\b' }
 
     alias rgg="noglob rg --no-ignore-vcs --hidden --glob "!.zhistory""
+    alias rggf="noglob rg --fixed-strings --no-ignore-vcs --hidden --glob "!.zhistory""
     alias rg="noglob rg --glob "!.zhistory""
     alias rgf="noglob rg --fixed-strings --glob "!.zhistory""
     alias -g G=" |& rg "
@@ -134,11 +153,11 @@ else
 fi
 
 if type eza > /dev/null 2>&1; then
-    alias e='eza --group-directories-first'
-    alias esort='eza --sort=oldest --long --git'
-    alias ee='eza --group-directories-first --long --git'
-    alias etree='eza --group-directories-first --long --git --tree'
-    alias ea='eza --group-directories-first --long --git --all'
+    alias e='eza --hyperlink --group-directories-first'
+    alias esort='eza --hyperlink --sort=oldest --long --git'
+    alias ee='eza --hyperlink --group-directories-first --long --git'
+    alias etree='eza --hyperlink --group-directories-first --long --git --tree'
+    alias ea='eza --hyperlink --group-directories-first --long --git --all'
 else
     alias e='ls --color=auto --group-directories-first'
     alias esort='ls --color=auto -lt --human-readable'
