@@ -153,18 +153,68 @@ else
     alias -g G=' |& grep --color=auto'
 fi
 
-if type eza > /dev/null 2>&1; then
-    alias e='eza --hyperlink --group-directories-first'
-    alias esort='eza --hyperlink --sort=oldest --long --git'
-    alias ee='eza --hyperlink --group-directories-first --long --git'
-    alias etree='eza --hyperlink --group-directories-first --long --git --tree'
-    alias ea='eza --hyperlink --group-directories-first --long --git --all'
-else
-    alias e='ls --color=auto --group-directories-first'
-    alias esort='ls --color=auto -lt --human-readable'
-    alias ee='ls --color=auto --no-group --group-directories-first -l --human-readable'
-    alias ea='ls --color=auto --group-directories-first --all --human-readable'
-fi
+lsc() {
+    ls --hyperlink=always --color=always --human-readable -o $@ | awk '
+        BEGIN {
+            FPAT = "([[:space:]]*[^[:space:]]+)";
+            OFS = "";
+        }
+        {
+            permission = $1;
+            colorPerm = "";
+            for (i = 1; i <= length(permission); i++) {
+                c = substr(permission, i, 1);
+                color = "\033[37m"; # Default color (white)
+                if (c == "d") color = "\033[36m"; # Cyan for directories
+                else if (c == "r") color = "\033[1;32m"; # Green for read
+                else if (c == "w") color = "\033[1;33m"; # Yellow for write
+                else if (c == "x") color = "\033[1;31m"; # Red for execute
+                else if (c == "l") color = "\033[1;36m"; # Cyan for symlinks
+                else if (c == "-") color = "\033[1;30m"; # White for no permission
+                colorPerm = colorPerm color c "\033[0m";
+            }
+
+            if (substr($1, 1, 1) != "-") {
+                len = length($4);
+                padded = sprintf("%" len "s", "-");
+                $4 = "\033[1;30m" padded "\033[0m";
+            } else {
+                $4 = "\033[36m" $4 "\033[0m";
+            }
+
+            $1 = colorPerm;
+            $2 = "\033[32m" $2 "\033[0m";
+
+            userLength = length($3);
+            originalOwnerField = $3;
+            # Remove leading and trailing spaces for comparison
+            trimmedOwner = $3;
+            gsub(/^[ \t]+|[ \t]+$/, "", trimmedOwner);
+
+
+            if (trimmedOwner != ENVIRON["USER"]) {
+                $3 = "\033[1;31m" originalOwnerField "\033[0m";
+            } else {
+                $3 = "\033[1;33m" originalOwnerField "\033[0m";
+            }
+
+            $5 = "\033[3;34m" $5 "\033[0m";
+            $6 = "\033[34m" $6 "\033[0m";
+            $7 = "\033[34m" $7 "\033[0m";
+            print
+        }
+    '
+}
+
+
+
+alias e='lsc -d * --group-directories-first'
+alias esort='lsc -d * -t'
+alias ee='lsc -d * --group-directories-first'
+alias ea='lsc -d * .** --group-directories-first'
+
+
+
 
 countsource() {
     for extension in $(fd . -t f | rg -o '\.[a-zA-Z]+$' | sort | uniq | cut -c 2-); do
