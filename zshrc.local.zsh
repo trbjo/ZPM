@@ -49,12 +49,27 @@ alias normal='noglob swaymsg -q -- output * scale 2'
 alias msg='/usr/bin/swaymsg -q -t send_tick'
 alias curl='curlie'
 
-local become
-[[ $UID == 0 ]] || become='doas'
-alias sys="$become /usr/bin/systemctl"
-alias sysu="/usr/bin/systemctl --user"
-alias mount="$become /usr/bin/mount"
-alias net="$become /usr/bin/networkctl"
+(){
+    local become
+    [[ $UID == 0 ]] || become='doas'
+    alias sys="$become /usr/bin/systemctl"
+    alias machine="$become /usr/bin/machinectl"
+    alias sysu="/usr/bin/systemctl --user"
+    alias mount="$become /usr/bin/mount"
+    alias net="$become /usr/bin/networkctl"
+}
+
+function action() {
+    local action=$1
+    shift
+    for svc in $@; /usr/bin/systemctl --user $action pnpm@$svc
+}
+alias stop='action stop'
+
+function run() {
+    action start $@
+    journalctl --user --follow --since=now --output cat ${@/#/--unit=pnpm@}
+}
 
 remove() { $become /usr/bin/umount $1 && $become /usr/bin/sync && print "usb is safe to remove"  || return 2 }
 
@@ -99,7 +114,6 @@ alias \$=''
 alias '#'=doas
 
 # Git aliases
-alias glo="git log --date=format:'%a %d %b %H.%M' --pretty=format:'%Cred%h %Cgreen%cd %C(blue)%an%Creset%Creset ●%d%Creset %s' --abbrev-commit"
 alias gs='git status --porcelain --short'
 alias gco='git checkout'
 alias gcp='git cherry-pick'
@@ -116,19 +130,6 @@ alias push='git push'
 alias pushorigin='git push --set-upstream origin $(git branch --show-current)'
 alias pull='git pull --rebase'
 
-# alias dirty='git -c color.status=always status --short | fzf --delimiter=" " --preview "git diff HEAD {-1} | delta --width=\$(( \$FZF_PREVIEW_COLUMNS - 1 ))" --preview-window=bottom,80% | cut -c4- | u'
-
-function dirty() {
-    git -c color.status=always status --short | fzf \
-        --delimiter=" " \
-        --preview 'if [[ {} == "?"* ]]; then
-                          git diff --no-index /dev/null {-1} | delta --width=$(( $FZF_PREVIEW_COLUMNS - 1));
-                      else
-                          git diff HEAD -- {-1} | delta --width=$(( $FZF_PREVIEW_COLUMNS - 1));
-                      fi;' \
-        --preview-window=bottom,80%
-
-}
 
 # Easy redirect
 alias -g silent="> /dev/null 2>&1"
