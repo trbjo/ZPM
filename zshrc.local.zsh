@@ -34,6 +34,7 @@ zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'$HOME/.tm
 # - - - - - - - - ALIASES - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
 
+alias -g fd='fd --exclude node_modules'
 alias fdd='fd --no-ignore-vcs --hidden'
 alias fix_whitespace="git ls-tree -r master --name-only | xargs sed -i 's/[ \t]*$//'"
 alias LG='doas /usr/bin/LG_ultrafine_brightness'
@@ -71,6 +72,8 @@ function run() {
     journalctl --user --follow --since=now --output cat ${@/#/--unit=pnpm@}
 }
 
+alias nx='systemd-run --quiet --working-directory=/home/tb/code/monorepo --scope --slice=dev.slice --user pnpm nx'
+
 remove() { $become /usr/bin/umount $1 && $become /usr/bin/sync && print "usb is safe to remove"  || return 2 }
 
 alias js='journalctl -n 200 --no-pager --follow --output cat --unit'
@@ -91,6 +94,7 @@ alias failed-services='systemctl --failed'
 () {
     local pacman=/usr/bin/pacman
     alias Syu="doas $pacman -Syu"
+    alias Fl="doas $pacman -Fl"
     alias U="doas $pacman -U"
     alias Sy="doas $pacman -Sy"
     alias S="doas $pacman -S"
@@ -154,7 +158,7 @@ else
 fi
 
 lsc() {
-    ls --hyperlink=always --color=always --human-readable -o $@ | awk '
+    /usr/bin/ls --hyperlink=always --color=always --human-readable -o $@ | awk '
         BEGIN {
             FPAT = "([[:space:]]*[^[:space:]]+)";
             OFS = "";
@@ -208,13 +212,10 @@ lsc() {
 
 
 
-alias e='lsc -d * --group-directories-first'
-alias esort='lsc -d * -t'
-alias ee='lsc -d * --group-directories-first'
-alias ea='lsc -d * .** --group-directories-first'
-
-
-
+alias e='ls --group-directories-first --hyperlink=always --color=always --human-readable'
+alias esort='fancyls -d * -t'
+alias ee='fancyls -d * --group-directories-first'
+alias ea='fancyls -d * .** --group-directories-first'
 
 countsource() {
     for extension in $(fd . -t f | rg -o '\.[a-zA-Z]+$' | sort | uniq | cut -c 2-); do
