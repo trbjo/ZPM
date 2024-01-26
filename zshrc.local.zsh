@@ -149,73 +149,21 @@ if type rg > /dev/null 2>&1; then
     alias rggf="noglob rg --fixed-strings --no-ignore-vcs --hidden --glob "!.zhistory""
     alias rg="noglob rg --glob "!.zhistory""
     alias rgf="noglob rg --fixed-strings --glob "!.zhistory""
-    alias -g G=" |& rg "
-    alias -g GG=" |& rg"
-    alias -g GF=" |& rg --fixed-strings --"
-    alias -g HL=" |& rg -C 9999999999999999 --"
+    alias -g G=" | rg "
+    alias -g GG=" | rg"
+    alias -g GF=" | rg --fixed-strings --"
+    alias -g HL=" | rg -C 9999999999999999 --"
 else
     alias -g G=' |& grep --color=auto'
 fi
 
-lsc() {
-    /usr/bin/ls --hyperlink=always --color=always --human-readable -o $@ | awk '
-        BEGIN {
-            FPAT = "([[:space:]]*[^[:space:]]+)";
-            OFS = "";
-        }
-        {
-            permission = $1;
-            colorPerm = "";
-            for (i = 1; i <= length(permission); i++) {
-                c = substr(permission, i, 1);
-                color = "\033[37m"; # Default color (white)
-                if (c == "d") color = "\033[36m"; # Cyan for directories
-                else if (c == "r") color = "\033[1;32m"; # Green for read
-                else if (c == "w") color = "\033[1;33m"; # Yellow for write
-                else if (c == "x") color = "\033[1;31m"; # Red for execute
-                else if (c == "l") color = "\033[1;36m"; # Cyan for symlinks
-                else if (c == "-") color = "\033[1;30m"; # White for no permission
-                colorPerm = colorPerm color c "\033[0m";
-            }
-
-            if (substr($1, 1, 1) != "-") {
-                len = length($4);
-                padded = sprintf("%" len "s", "-");
-                $4 = "\033[1;30m" padded "\033[0m";
-            } else {
-                $4 = "\033[36m" $4 "\033[0m";
-            }
-
-            $1 = colorPerm;
-            $2 = "\033[32m" $2 "\033[0m";
-
-            userLength = length($3);
-            originalOwnerField = $3;
-            # Remove leading and trailing spaces for comparison
-            trimmedOwner = $3;
-            gsub(/^[ \t]+|[ \t]+$/, "", trimmedOwner);
-
-
-            if (trimmedOwner != ENVIRON["USER"]) {
-                $3 = "\033[1;31m" originalOwnerField "\033[0m";
-            } else {
-                $3 = "\033[1;33m" originalOwnerField "\033[0m";
-            }
-
-            $5 = "\033[3;34m" $5 "\033[0m";
-            $6 = "\033[34m" $6 "\033[0m";
-            $7 = "\033[34m" $7 "\033[0m";
-            print
-        }
-    '
-}
 
 
 
 alias e='ls --group-directories-first --hyperlink=always --color=always --human-readable'
-alias esort='fancyls -d * -t'
-alias ee='fancyls -d * --group-directories-first'
-alias ea='fancyls -d * .** --group-directories-first'
+alias esort='fancyls -t'
+alias ee='fancyls'
+alias ea='fancyls -A'
 
 countsource() {
     for extension in $(fd . -t f | rg -o '\.[a-zA-Z]+$' | sort | uniq | cut -c 2-); do
