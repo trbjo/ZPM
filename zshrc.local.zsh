@@ -34,7 +34,7 @@ zpm tmux-plugins/tpm if:'type tmux && [[ ! -d "$HOME/.tmux" ]]' where:'$HOME/.tm
 # - - - - - - - - ALIASES - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
 
-alias -g fd='fd --exclude node_modules'
+alias -g fd=$FZF_DEFAULT_COMMAND
 alias fdd='fd --no-ignore-vcs --hidden'
 alias fix_whitespace="git ls-tree -r master --name-only | xargs sed -i 's/[ \t]*$//'"
 alias LG='doas /usr/bin/LG_ultrafine_brightness'
@@ -68,7 +68,11 @@ function action() {
 alias stop='action stop'
 
 function run() {
-    action start $@
+    action restart $@
+    journalctl --user --follow --since=now --output cat ${@/#/--unit=pnpm@}
+}
+
+function follow() {
     journalctl --user --follow --since=now --output cat ${@/#/--unit=pnpm@}
 }
 
@@ -91,24 +95,22 @@ alias list-deps='systemctl list-dependencies'
 alias failed-services='systemctl --failed'
 
 
-() {
-    local pacman=/usr/bin/pacman
-    alias Syu="doas $pacman -Syu"
-    alias Fl="doas $pacman -Fl"
-    alias U="doas $pacman -U"
-    alias Sy="doas $pacman -Sy"
-    alias S="doas $pacman -S"
-    alias Ss="$pacman -Ss"
-    alias Rsn="doas $pacman -Rsn"
-    alias Rns="doas $pacman -Rsn"
-    alias Rdd="doas $pacman -Rdd"
-    alias Qs='$pacman -Qs'
-    # list packages owned by
-    alias Qo='$pacman -Qo'
-    alias Qqs='$pacman -Qqs'
-    alias Qq='$pacman -Qq'
-    alias Qtdq="doas pacman -Rsn $(pacman -Qtdq)"
-}
+local pacman=/usr/bin/pacman
+alias Syu="doas $pacman -Syu"
+alias Fl="doas $pacman -Fl"
+alias U="doas $pacman -U"
+alias Sy="doas $pacman -Sy"
+alias S="doas $pacman -S"
+alias Ss="$pacman -Ss"
+alias Rsn="doas $pacman -Rsn"
+alias Rns="doas $pacman -Rsn"
+alias Rdd="doas $pacman -Rdd"
+alias Qs='$pacman -Qs'
+# list packages owned by
+alias Qo='$pacman -Qo'
+alias Qqs='$pacman -Qqs'
+alias Qq='$pacman -Qq'
+alias Qtdq="doas pacman -Rsn $(pacman -Qtdq)"
 
 
 # strips the dollar sign when pasting from the internet
@@ -160,9 +162,9 @@ fi
 
 
 
-alias e='ls --group-directories-first --hyperlink=always --color=always --human-readable'
+alias e='fancyls'
 alias esort='fancyls -t'
-alias ee='fancyls'
+alias ee='fancyls -o'
 alias ea='fancyls -A'
 
 countsource() {

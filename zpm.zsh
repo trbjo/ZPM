@@ -16,6 +16,7 @@ function _enum_exit_code() {
         47) print -n "No archive given" ;;
         48) print -n "No destination given" ;;
     esac
+    return $1
 }
 
 pprint() {

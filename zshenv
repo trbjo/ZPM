@@ -1,3 +1,4 @@
+/home/tb/.local/bin/colorswitcher
 TRAPUSR1() {
     type -f compinit > /dev/null 2>&1 && compinit -i
     rehash
@@ -12,8 +13,7 @@ TRAPUSR1() {
     # colors won't render correctly if the shell does not know about terminal capabilities
     PROMPT_STR=$'${ZPM_DEBUG-\e8}'
     PROMPT_STR+='${SSH_CONNECTION:+%B[%b${PROMPT_SSH_NAME:-$HOST}%B]%b }'
-    [[ $PROMPT_PWD ]] && PROMPT_STR+=$PROMPT_PWD ||\
-    PROMPT_STR+=%F{6}${${PWD/#$HOME/\~}//\//%F{fg_default_code}\/%F{6}}%F{fg_default_code}
+    PROMPT_STR+='$(colorpath)'
     PROMPT_STR+='$PROMPT_READ_ONLY_DIR'
     PROMPT_STR+='${GITSTATUS}'
     PROMPT_STR+='${PROMPT_WS_SEP:- }'

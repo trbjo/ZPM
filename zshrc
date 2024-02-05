@@ -6,6 +6,7 @@ PROMPT=${PROMPT_STR}
 # - - - - - - - - PLUGINS - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - -
 
+export ZSHZ_LOCATION=/home/tb/.z
 # sets up zsh completion system, some keybindings, and some useful aliases
 zpm trbjo/zsh-sensible-defaults
 zpm agkozak/zsh-z preload:'ZSHZ_CASE=smart; ZSHZ_CMD=h' postload:'autoload -U compinit && compinit'
@@ -31,11 +32,11 @@ zpm trbjo/zsh-fzf-functions if:'type fzf'
 # Dependency of prompt
 zpm romkatv/gitstatus
 zpm trbjo/zsh-prompt-compact\
-    preload:"
-        typeset -g __PROMPT_NEWLINE;
-        truncate_prompt(){};
+    preload:'
+        export RPROMPT=""
+        truncate_prompt() {}
         TRAPWINCH() { truncate_prompt && zle && { zle .reset-prompt } };
-        EXTRA_SSH_ENV='git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh && exec zsh'"\
+        EXTRA_SSH_ENV="git clone https://github.com/trbjo/ZPM ~/.ZPM && ~/.ZPM/setup.sh && exec zsh"'\
 
 # - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - SETOPTS - - - - - - - -
